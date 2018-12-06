@@ -6,8 +6,12 @@ Event Based Framework
 
 ## In a new project
 
-`git submodule add git@github.com:vivaxy/event-based-framework.git`
+`git submodule add https://github.com/vivaxy/event-based-framework.git`
 
 ## In a initialized project
 
-`git submodule init && git submodule update`
+`git submodule update --init`
+
+## Update in a project
+
+`git submodule foreach git pull`

@@ -1,5 +1,5 @@
 /**
- * @since 2018-06-14 14:05:19
+ * @since 2018-05-20 14:05:19
  * @author vivaxy
  */
 
@@ -12,14 +12,13 @@ export default class EventEmitter {
    *
    * @param event
    * @param callback
-   * @param refer
+   * @param [refer]
    * @returns {EventEmitter}
    */
   on(event, callback, refer) {
     if (!this.events[event]) {
       this.events[event] = [];
     }
-    // console.log('EventEmitter.on', event, callback, refer);
     this.events[event].push({ callback, refer });
     return this;
   }
