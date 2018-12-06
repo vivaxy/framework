@@ -1,0 +1,14 @@
+/**
+ * @since 2018-12-06 19:33
+ * @author vivaxy
+ */
+
+export const PAGE_LOADING = 'PAGE_LOADING';
+export const PAGE_LOADED = 'PAGE_LOADED';
+
+export const TICK_LOOP = 'TICK_LOOP';
+
+export const ADD_CANVAS_RENDER_LAYER = 'ADD_CANVAS_RENDER_LAYER';
+export const REMOVE_CANVAS_RENDER_LAYER = 'REMOVE_CANVAS_RENDER_LAYER';
+export const START_CANVAS_RENDER = 'START_CANVAS_RENDER';
+export const STOP_CANVAS_RENDER = 'STOP_CANVAS_RENDER';
