@@ -1,0 +1,15 @@
+{
+  "name": "event-based-framework",
+  "version": "0.0.0",
+  "description": "Event Based Framework",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivaxy/event-based-framework.git"
+  },
+  "author": "vivaxy <xyxuye2007@126.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vivaxy/event-based-framework/issues"
+  },
+  "homepage": "https://github.com/vivaxy/event-based-framework#readme"
+}
