@@ -1,9 +1,9 @@
-# event-based-framework
+# Framework
 
-Event Based Framework
+Framework
 
 # Usage
 
 ```js
-import EventEmitter from 'https://unpkg.com/event-based-framework/class/event-emitter.js';
+import EventEmitter from 'https://unpkg.com/@vivaxy/framework/class/event-emitter.js';
 ```

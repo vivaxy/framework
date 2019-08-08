@@ -1,15 +1,39 @@
 {
-  "name": "event-based-framework",
+  "name": "@vivaxy/framework",
   "version": "0.0.0",
-  "description": "Event Based Framework",
+  "description": "Framework",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vivaxy/event-based-framework.git"
+    "url": "git+https://github.com/vivaxy/framework.git"
   },
   "author": "vivaxy <xyxuye2007@126.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vivaxy/event-based-framework/issues"
+    "url": "https://github.com/vivaxy/framework/issues"
   },
-  "homepage": "https://github.com/vivaxy/event-based-framework#readme"
+  "homepage": "https://github.com/vivaxy/framework#readme",
+  "lint-staged": {
+    "*.{js,ts,css,less,json,md,html,yml,yaml,pcss,jsx,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "husky": "^3.0.2",
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2",
+    "standard-version": "^7.0.0"
+  },
+  "scripts": {
+    "release:beta": "standard-version --prerelease beta && npm publish --tag beta && git push --follow-tags",
+    "release": "standard-version && npm publish && git push --follow-tags"
+  }
 }
