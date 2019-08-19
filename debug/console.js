@@ -1,8 +1,7 @@
-/**
- * @since 2019-08-08 15:52
- * @author vivaxy
- */
 const $log = document.createElement('div');
+$log.style.fontFamily = 'monospace';
+$log.style.border = '1px solid rgb(170, 170, 170)';
+$log.style.overflow = 'auto';
 document.currentScript.insertAdjacentElement('afterend', $log);
 
 const logTypeColors = {
@@ -36,6 +35,30 @@ function appendLog(color, ...args) {
   const $piece = document.createElement('div');
   $piece.style.color = color;
   $piece.style.whiteSpace = 'pre';
-  $piece.textContent = args.join(' ');
+  $piece.style.margin = '1px 8px';
+  $piece.style.display = 'inline-block';
+  args.forEach(function(arg) {
+    const $arg = document.createElement('span');
+    if (typeof arg === 'boolean') {
+      $arg.style.color = '#263baf';
+      $arg.innerText = arg;
+    } else if (typeof arg === 'number') {
+      $arg.style.color = '#263baf';
+      $arg.innerText = arg;
+    } else if (typeof arg === 'symbol') {
+      $arg.style.color = '#c21d1f';
+      $arg.innerText = arg.toString();
+    } else {
+      $arg.innerText = arg;
+    }
+    $piece.appendChild($arg);
+
+    const $space = document.createElement('span');
+    $space.innerText = ' ';
+    $piece.appendChild($space);
+  });
   $log.appendChild($piece);
+
+  const $br = document.createElement('div');
+  $log.appendChild($br);
 }
