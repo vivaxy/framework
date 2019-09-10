@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/vivaxy/framework/compare/v0.0.1...v0.0.2) (2019-09-10)
+
+
+### Features
+
+* **console:** :sparkles: support log error ([aaaba9c](https://github.com/vivaxy/framework/commit/aaaba9c))
+
 ### 0.0.1 (2019-08-19)
 
 
