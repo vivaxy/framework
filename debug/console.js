@@ -40,6 +40,7 @@ function appendLog(color, ...args) {
   args.forEach(function(arg) {
     const $arg = document.createElement('span');
     if (arg instanceof Error) {
+      // error.stack === undefined on Mobile Chrome
       $arg.innerText = arg.stack || arg.valueOf() || arg.name;
     } else if (typeof arg === 'boolean') {
       $arg.style.color = '#263baf';
