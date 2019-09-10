@@ -39,7 +39,9 @@ function appendLog(color, ...args) {
   $piece.style.display = 'inline-block';
   args.forEach(function(arg) {
     const $arg = document.createElement('span');
-    if (typeof arg === 'boolean') {
+    if (arg instanceof Error) {
+      $arg.innerText = arg.stack;
+    } else if (typeof arg === 'boolean') {
       $arg.style.color = '#263baf';
       $arg.innerText = arg;
     } else if (typeof arg === 'number') {
