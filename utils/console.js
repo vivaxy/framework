@@ -40,8 +40,15 @@ function appendLog(color, ...args) {
   args.forEach(function(arg) {
     const $arg = document.createElement('span');
     if (arg instanceof Error) {
-      // error.stack === undefined on Mobile Chrome
-      $arg.innerText = arg.stack || arg.valueOf() || arg.name;
+      if (!arg.stack) {
+        // DOMException has no stack, captureStackTrace
+        if (Error.captureStackTrace) {
+          Error.captureStackTrace(arg);
+        } else {
+          arg.stack = '(Unavailable error stack)';
+        }
+      }
+      $arg.innerText = arg.stack;
     } else if (typeof arg === 'boolean') {
       $arg.style.color = '#263baf';
       $arg.innerText = arg;
