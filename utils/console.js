@@ -3,12 +3,60 @@ $log.style.fontFamily = 'menlo, monospace';
 $log.style.fontSize = '12px';
 $log.style.lineHeight = '16px';
 $log.style.display = 'inline-block';
+$log.style.minWidth = '100%';
 
-const $logContainer = document.createElement('div');
-$logContainer.style.border = '1px solid rgb(170, 170, 170)';
-$logContainer.style.overflow = 'auto';
-$logContainer.appendChild($log);
-document.currentScript.insertAdjacentElement('afterend', $logContainer);
+const $actionBar = document.createElement('div');
+$actionBar.style.backgroundColor = '#f3f3f3';
+const $actionButtons = [createClearButton()];
+$actionButtons.forEach(function($actionButton) {
+  $actionBar.appendChild($actionButton);
+});
+
+function createClearButton() {
+  const $clear = document.createElement('div');
+  $clear.style.width = '24px';
+  $clear.style.height = '24px';
+  $clear.style.position = 'relative';
+
+  const $circle = document.createElement('div');
+  $circle.style.width = '10px';
+  $circle.style.height = '10px';
+  $circle.style.border = '2px solid #6e6e6e';
+  $circle.style.borderRadius = '100%';
+  center($circle);
+
+  const $line = document.createElement('div');
+  $line.style.backgroundColor = '#6e6e6e';
+  $line.style.width = '10px';
+  $line.style.height = '2px';
+  $line.style.transform = 'rotate(45deg)';
+  $line.style.transformOrigin = '0px 0px';
+  center($line);
+
+  function center($item) {
+    $item.style.position = 'absolute';
+    $item.style.top = '50%';
+    $item.style.left = '50%';
+    $item.style.transform += 'translate(-50%, -50%)';
+  }
+
+  $clear.appendChild($line);
+  $clear.appendChild($circle);
+
+  $clear.addEventListener('click', function() {
+    console.clear();
+  });
+
+  return $clear;
+}
+
+const $main = document.createElement('div');
+$main.style.border = '1px solid rgb(170, 170, 170)';
+$main.style.overflow = 'auto';
+$main.style.fontSize = '0';
+$main.appendChild($actionBar);
+$main.appendChild($log);
+document.currentScript.insertAdjacentElement('afterend', $main);
 
 const logTypeColors = {
   log: ['#303942', '#fff', '#f0f0f0'],

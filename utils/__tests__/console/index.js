@@ -28,7 +28,7 @@ console.log({
 console.log(function fn(a, b) {
   return a + b;
 });
-console.log(new Error());
+console.log(new Error('1'.repeat(100)));
 console.log(map);
 console.log(weakMap);
 console.log(set);
