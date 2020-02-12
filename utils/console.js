@@ -2,7 +2,6 @@ const $log = document.createElement('div');
 $log.style.fontFamily = 'menlo, monospace';
 $log.style.fontSize = '12px';
 $log.style.lineHeight = '16px';
-$log.style.display = 'inline-block';
 $log.style.minWidth = '100%';
 
 const $actionBar = document.createElement('div');
@@ -101,9 +100,9 @@ function serializeSet(set) {
 
 function appendLog([color, backgroundColor, borderBottomColor], ...args) {
   const $piece = document.createElement('div');
-  $piece.style.whiteSpace = 'pre';
+  $piece.style.whiteSpace = 'pre-wrap';
+  $piece.style.wordBreak = 'break-all';
   $piece.style.margin = '1px 8px';
-  $piece.style.display = 'inline-block';
   args.forEach(function(arg) {
     const $arg = document.createElement('span');
     if (arg instanceof Error) {
