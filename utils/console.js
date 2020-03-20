@@ -67,11 +67,49 @@ const logTypeColors = {
 
 const originalConsole = {
   clear: console.clear,
+  time: console.time,
+  timeLog: console.timeLog,
+  timeEnd: console.timeEnd,
 };
 
 console.clear = function() {
   $log.innerHTML = '';
   originalConsole.clear();
+};
+
+const timers = {};
+console.time = function(timerName = 'default') {
+  originalConsole.time(timerName);
+  if (timerName in timers) {
+    appendLog(logTypeColors.warn, `Timer '${timerName}' already exists`);
+  } else {
+    timers[timerName] = performance.now();
+  }
+};
+
+console.timeLog = function(timerName = 'default') {
+  originalConsole.timeLog(timerName);
+  if (timerName in timers) {
+    appendLog(
+      logTypeColors.log,
+      `${timerName}: ${performance.now() - timers[timerName]}ms`,
+    );
+  } else {
+    appendLog(logTypeColors.warn, `Timer '${timerName}' does not exist`);
+  }
+};
+
+console.timeEnd = function(timerName = 'default') {
+  originalConsole.timeEnd(timerName);
+  if (timerName in timers) {
+    appendLog(
+      logTypeColors.log,
+      `${timerName}: ${performance.now() - timers[timerName]}ms`,
+    );
+    delete timers[timerName];
+  } else {
+    appendLog(logTypeColors.warn, `Timer '${timerName}' does not exist`);
+  }
 };
 
 Object.keys(logTypeColors).forEach(function(type) {

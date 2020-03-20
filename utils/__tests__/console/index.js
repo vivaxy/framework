@@ -38,3 +38,13 @@ console.debug('debug');
 console.info('info');
 console.warn('warn');
 console.error('error');
+
+// normal timers
+console.time();
+console.timeLog();
+console.timeEnd();
+
+console.timeLog('a');
+console.timeEnd('a');
+console.time('a');
+console.time('a');
