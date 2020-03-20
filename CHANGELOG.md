@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/vivaxy/framework/compare/v0.0.6...v0.0.7) (2020-03-20)
+
+
+### Features
+
+* **console:** :sparkles:  support console.time timeLog timeEnd ([89463e4](https://github.com/vivaxy/framework/commit/89463e4))
+
 ### [0.0.6](https://github.com/vivaxy/framework/compare/v0.0.5...v0.0.6) (2020-02-12)
 
 
