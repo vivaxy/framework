@@ -30,7 +30,7 @@
     "husky": "^4.0.0",
     "lint-staged": "^9.2.1",
     "prettier": "^2.0.0",
-    "standard-version": "^7.0.0"
+    "standard-version": "^8.0.0"
   },
   "scripts": {
     "release:beta": "standard-version --prerelease beta && npm publish --tag beta && git push --follow-tags",
