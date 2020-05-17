@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/vivaxy/framework/compare/v0.0.8...v0.0.9) (2020-05-17)
+
+
+### Features
+
+* **console:** :sparkles: support serialize all Document ([c548560](https://github.com/vivaxy/framework/commit/c548560))
+
 ### [0.0.8](https://github.com/vivaxy/framework/compare/v0.0.7...v0.0.8) (2020-05-17)
 
 
