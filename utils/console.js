@@ -136,7 +136,7 @@ function serializeSet(set) {
     .join(', ')}]`;
 }
 
-function serializeHTMLDocument(htmlDocument) {
+function serializeDocument(htmlDocument) {
   const xmlSerializer = new XMLSerializer();
   return xmlSerializer.serializeToString(htmlDocument);
 }
@@ -164,8 +164,8 @@ function appendLog([color, backgroundColor, borderBottomColor], ...args) {
       $arg.innerText = `Set(${arg.size}) ${serializeSet(arg)}`;
     } else if (arg instanceof WeakMap || arg instanceof WeakSet) {
       $arg.innerText = arg.toString();
-    } else if (arg instanceof HTMLDocument) {
-      $arg.innerText = `#document(${serializeHTMLDocument(arg)})`;
+    } else if (arg instanceof Document) {
+      $arg.innerText = `#document(${serializeDocument(arg)})`;
     } else if (typeof arg === 'boolean') {
       $arg.style.color = '#0d22aa';
       $arg.innerText = arg;
