@@ -2,6 +2,8 @@
  * @since 2020-02-06 08:58
  * @author vivaxy
  */
+import getCallSites from '../../call-sites.js';
+
 const map = new Map();
 map.set('key', 'value');
 
@@ -48,3 +50,5 @@ console.timeLog('a');
 console.timeEnd('a');
 console.time('a');
 console.time('a');
+
+console.log(getCallSites());

@@ -7,7 +7,7 @@ $log.style.minWidth = '100%';
 const $actionBar = document.createElement('div');
 $actionBar.style.backgroundColor = '#f3f3f3';
 const $actionButtons = [createClearButton()];
-$actionButtons.forEach(function($actionButton) {
+$actionButtons.forEach(function ($actionButton) {
   $actionBar.appendChild($actionButton);
 });
 
@@ -42,7 +42,7 @@ function createClearButton() {
   $clear.appendChild($line);
   $clear.appendChild($circle);
 
-  $clear.addEventListener('click', function() {
+  $clear.addEventListener('click', function () {
     console.clear();
   });
 
@@ -72,13 +72,13 @@ const originalConsole = {
   timeEnd: console.timeEnd,
 };
 
-console.clear = function() {
+console.clear = function () {
   $log.innerHTML = '';
   originalConsole.clear();
 };
 
 const timers = {};
-console.time = function(timerName = 'default') {
+console.time = function (timerName = 'default') {
   originalConsole.time(timerName);
   if (timerName in timers) {
     appendLog(logTypeColors.warn, `Timer '${timerName}' already exists`);
@@ -87,7 +87,7 @@ console.time = function(timerName = 'default') {
   }
 };
 
-console.timeLog = function(timerName = 'default') {
+console.timeLog = function (timerName = 'default') {
   originalConsole.timeLog(timerName);
   if (timerName in timers) {
     appendLog(
@@ -99,7 +99,7 @@ console.timeLog = function(timerName = 'default') {
   }
 };
 
-console.timeEnd = function(timerName = 'default') {
+console.timeEnd = function (timerName = 'default') {
   originalConsole.timeEnd(timerName);
   if (timerName in timers) {
     appendLog(
@@ -112,11 +112,11 @@ console.timeEnd = function(timerName = 'default') {
   }
 };
 
-Object.keys(logTypeColors).forEach(function(type) {
+Object.keys(logTypeColors).forEach(function (type) {
   const colors = logTypeColors[type];
 
   originalConsole[type] = console[type];
-  console[type] = function(...args) {
+  console[type] = function (...args) {
     appendLog(colors, ...args);
     originalConsole[type](...args);
   };
@@ -130,10 +130,9 @@ function serializeMap(map) {
   return JSON.stringify(json, null, 2);
 }
 
-function serializeSet(set) {
-  return `[${Array.from(set)
-    .map((item) => JSON.stringify(item))
-    .join(', ')}]`;
+function serializeArrayLike(arrayLike) {
+  const array = Array.from(arrayLike);
+  return `(${array.length}) [${array.map(serialize).join(', ')}]`;
 }
 
 function serializeDocument(htmlDocument) {
@@ -141,51 +140,111 @@ function serializeDocument(htmlDocument) {
   return xmlSerializer.serializeToString(htmlDocument);
 }
 
+function serialize(arg) {
+  if (arg instanceof Error) {
+    if (!arg.stack) {
+      // DOMException has no stack, captureStackTrace
+      if (Error.captureStackTrace) {
+        Error.captureStackTrace(arg);
+      } else {
+        arg.stack = '(Unavailable error stack)';
+      }
+    }
+    return arg.stack;
+  }
+  if (arg instanceof Map) {
+    return `Map(${arg.size}) ${serializeMap(arg)}`;
+  }
+  if (arg instanceof Set) {
+    return `Set(${arg.size}) ${serializeArrayLike(arg)}`;
+  }
+  if (arg instanceof WeakMap || arg instanceof WeakSet) {
+    return arg.toString();
+  }
+  if (arg instanceof Document) {
+    return `#document(${serializeDocument(arg)})`;
+  }
+  if (arg instanceof Date) {
+    return arg.toString();
+  }
+  if (typeof arg === 'boolean') {
+    return String(arg);
+  }
+  if (typeof arg === 'number') {
+    return String(arg);
+  }
+  if (typeof arg === 'symbol') {
+    return arg.toString();
+  }
+  if (typeof arg === 'undefined' || arg === null) {
+    return String(arg);
+  }
+  if (arg instanceof Array) {
+    return serializeArrayLike(arg);
+  }
+  if (typeof arg === 'object') {
+    if (arg.constructor.name === 'CallSite') {
+      return `CallSite(${arg.toString()})`;
+    }
+    return JSON.stringify(
+      arg,
+      function (key, value) {
+        if (!key) {
+          return value;
+        }
+        return serialize(value);
+      },
+      2,
+    );
+  }
+  if (typeof arg === 'function') {
+    return String(arg);
+  }
+  return String(arg);
+}
+
+function getStyle(arg) {
+  if (typeof arg === 'boolean') {
+    return {
+      color: '#0d22aa',
+    };
+  }
+  if (typeof arg === 'number') {
+    return {
+      color: '#1c00cf',
+    };
+  }
+  if (typeof arg === 'symbol') {
+    return {
+      color: '#c41a16',
+    };
+  }
+  if (typeof arg === 'undefined' || arg === null) {
+    return {
+      color: '#808080',
+    };
+  }
+  if (typeof arg === 'function') {
+    return {
+      fontStyle: 'italic',
+    };
+  }
+  return {};
+}
+
 function appendLog([color, backgroundColor, borderBottomColor], ...args) {
   const $piece = document.createElement('div');
   $piece.style.whiteSpace = 'pre-wrap';
   $piece.style.wordBreak = 'break-all';
   $piece.style.margin = '1px 8px';
-  args.forEach(function(arg) {
+  args.forEach(function (arg) {
     const $arg = document.createElement('span');
-    if (arg instanceof Error) {
-      if (!arg.stack) {
-        // DOMException has no stack, captureStackTrace
-        if (Error.captureStackTrace) {
-          Error.captureStackTrace(arg);
-        } else {
-          arg.stack = '(Unavailable error stack)';
-        }
-      }
-      $arg.innerText = arg.stack;
-    } else if (arg instanceof Map) {
-      $arg.innerText = `Map(${arg.size}) ${serializeMap(arg)}`;
-    } else if (arg instanceof Set) {
-      $arg.innerText = `Set(${arg.size}) ${serializeSet(arg)}`;
-    } else if (arg instanceof WeakMap || arg instanceof WeakSet) {
-      $arg.innerText = arg.toString();
-    } else if (arg instanceof Document) {
-      $arg.innerText = `#document(${serializeDocument(arg)})`;
-    } else if (typeof arg === 'boolean') {
-      $arg.style.color = '#0d22aa';
-      $arg.innerText = arg;
-    } else if (typeof arg === 'number') {
-      $arg.style.color = '#1c00cf';
-      $arg.innerText = arg;
-    } else if (typeof arg === 'symbol') {
-      $arg.style.color = '#c41a16';
-      $arg.innerText = arg.toString();
-    } else if (typeof arg === 'undefined' || arg === null) {
-      $arg.style.color = '#808080';
-      $arg.innerHTML = String(arg);
-    } else if (typeof arg === 'object') {
-      $arg.innerHTML = JSON.stringify(arg, null, 2);
-    } else if (typeof arg === 'function') {
-      $arg.style.fontStyle = 'italic';
-      $arg.innerHTML = arg;
-    } else {
-      $arg.innerText = arg;
-    }
+
+    $arg.innerHTML = serialize(arg);
+    const styles = getStyle(arg);
+    Object.keys(styles).forEach(function (key) {
+      $arg.style[key] = styles[key];
+    });
     $piece.appendChild($arg);
 
     const $space = document.createElement('span');
