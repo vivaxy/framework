@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/vivaxy/framework/compare/v0.0.10...v0.0.11) (2020-09-30)
+
+
+### Features
+
+* **console:** :sparkles: support logging uncaught errors ([88256a1](https://github.com/vivaxy/framework/commit/88256a194067e98ab26e8b94f8cffc0c2a5d6d07))
+
 ### [0.0.10](https://github.com/vivaxy/framework/compare/v0.0.9...v0.0.10) (2020-06-03)
 
 
