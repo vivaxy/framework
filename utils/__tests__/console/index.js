@@ -52,3 +52,5 @@ console.time('a');
 console.time('a');
 
 console.log(getCallSites());
+
+throw new Error('UncaughtError');

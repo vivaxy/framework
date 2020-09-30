@@ -1,17 +1,13 @@
-const $log = document.createElement('div');
-$log.style.fontFamily = 'menlo, monospace';
-$log.style.fontSize = '12px';
-$log.style.lineHeight = '16px';
-$log.style.minWidth = '100%';
+function create$log() {
+  const $log = document.createElement('div');
+  $log.style.fontFamily = 'menlo, monospace';
+  $log.style.fontSize = '12px';
+  $log.style.lineHeight = '16px';
+  $log.style.minWidth = '100%';
+  return $log;
+}
 
-const $actionBar = document.createElement('div');
-$actionBar.style.backgroundColor = '#f3f3f3';
-const $actionButtons = [createClearButton()];
-$actionButtons.forEach(function ($actionButton) {
-  $actionBar.appendChild($actionButton);
-});
-
-function createClearButton() {
+function create$clear() {
   const $clear = document.createElement('div');
   $clear.style.width = '24px';
   $clear.style.height = '24px';
@@ -49,13 +45,23 @@ function createClearButton() {
   return $clear;
 }
 
-const $main = document.createElement('div');
-$main.style.border = '1px solid rgb(170, 170, 170)';
-$main.style.overflow = 'auto';
-$main.style.fontSize = '0';
-$main.appendChild($actionBar);
-$main.appendChild($log);
-document.currentScript.insertAdjacentElement('afterend', $main);
+function create$actionBar() {
+  const $actionBar = document.createElement('div');
+  $actionBar.style.backgroundColor = '#f3f3f3';
+  const $actionButtons = [create$clear()];
+  $actionButtons.forEach(function ($actionButton) {
+    $actionBar.appendChild($actionButton);
+  });
+  return $actionBar;
+}
+
+function create$main() {
+  const $main = document.createElement('div');
+  $main.style.border = '1px solid rgb(170, 170, 170)';
+  $main.style.overflow = 'auto';
+  $main.style.fontSize = '0';
+  return $main;
+}
 
 const logTypeColors = {
   log: ['#303942', '#fff', '#f0f0f0'],
@@ -64,63 +70,6 @@ const logTypeColors = {
   warn: ['#5c3c00', '#fffbe5', '#fff5c2'],
   error: ['#f00', '#fff0f0', '#ffd6d6'],
 };
-
-const originalConsole = {
-  clear: console.clear,
-  time: console.time,
-  timeLog: console.timeLog,
-  timeEnd: console.timeEnd,
-};
-
-console.clear = function () {
-  $log.innerHTML = '';
-  originalConsole.clear();
-};
-
-const timers = {};
-console.time = function (timerName = 'default') {
-  originalConsole.time(timerName);
-  if (timerName in timers) {
-    appendLog(logTypeColors.warn, `Timer '${timerName}' already exists`);
-  } else {
-    timers[timerName] = performance.now();
-  }
-};
-
-console.timeLog = function (timerName = 'default') {
-  originalConsole.timeLog(timerName);
-  if (timerName in timers) {
-    appendLog(
-      logTypeColors.log,
-      `${timerName}: ${performance.now() - timers[timerName]}ms`,
-    );
-  } else {
-    appendLog(logTypeColors.warn, `Timer '${timerName}' does not exist`);
-  }
-};
-
-console.timeEnd = function (timerName = 'default') {
-  originalConsole.timeEnd(timerName);
-  if (timerName in timers) {
-    appendLog(
-      logTypeColors.log,
-      `${timerName}: ${performance.now() - timers[timerName]}ms`,
-    );
-    delete timers[timerName];
-  } else {
-    appendLog(logTypeColors.warn, `Timer '${timerName}' does not exist`);
-  }
-};
-
-Object.keys(logTypeColors).forEach(function (type) {
-  const colors = logTypeColors[type];
-
-  originalConsole[type] = console[type];
-  console[type] = function (...args) {
-    appendLog(colors, ...args);
-    originalConsole[type](...args);
-  };
-});
 
 function serializeMap(map) {
   const json = {};
@@ -203,7 +152,7 @@ function serialize(arg) {
   return String(arg);
 }
 
-function getStyle(arg) {
+function getLogStyle(arg) {
   if (typeof arg === 'boolean') {
     return {
       color: '#0d22aa',
@@ -232,7 +181,11 @@ function getStyle(arg) {
   return {};
 }
 
-function appendLog([color, backgroundColor, borderBottomColor], ...args) {
+function appendLog(
+  $parent,
+  [color, backgroundColor, borderBottomColor],
+  ...args
+) {
   const $piece = document.createElement('div');
   $piece.style.whiteSpace = 'pre-wrap';
   $piece.style.wordBreak = 'break-all';
@@ -241,7 +194,7 @@ function appendLog([color, backgroundColor, borderBottomColor], ...args) {
     const $arg = document.createElement('span');
 
     $arg.innerHTML = serialize(arg);
-    const styles = getStyle(arg);
+    const styles = getLogStyle(arg);
     Object.keys(styles).forEach(function (key) {
       $arg.style[key] = styles[key];
     });
@@ -257,5 +210,104 @@ function appendLog([color, backgroundColor, borderBottomColor], ...args) {
   $pieceContainer.style.color = color;
   $pieceContainer.style.borderBottom = `1px solid ${borderBottomColor}`;
   $pieceContainer.appendChild($piece);
-  $log.appendChild($pieceContainer);
+  $parent.appendChild($pieceContainer);
 }
+
+function init() {
+  const $actionBar = create$actionBar();
+  const $log = create$log();
+  const $main = create$main();
+  $main.appendChild($actionBar);
+  $main.appendChild($log);
+  document.currentScript.insertAdjacentElement('afterend', $main);
+  const ERROR_EVENT = 'error';
+  function errorHandler(e) {
+    console.error(e.error);
+    e.preventDefault();
+  }
+  window.addEventListener(ERROR_EVENT, errorHandler);
+
+  const originalConsole = {
+    clear: console.clear,
+    time: console.time,
+    timeLog: console.timeLog,
+    timeEnd: console.timeEnd,
+  };
+
+  console.clear = function clear() {
+    $log.innerHTML = '';
+    originalConsole.clear();
+  };
+
+  const timers = {};
+  console.time = function (timerName = 'default') {
+    originalConsole.time(timerName);
+    if (timerName in timers) {
+      appendLog(
+        $log,
+        logTypeColors.warn,
+        `Timer '${timerName}' already exists`,
+      );
+    } else {
+      timers[timerName] = performance.now();
+    }
+  };
+
+  console.timeLog = function (timerName = 'default') {
+    originalConsole.timeLog(timerName);
+    if (timerName in timers) {
+      appendLog(
+        $log,
+        logTypeColors.log,
+        `${timerName}: ${performance.now() - timers[timerName]}ms`,
+      );
+    } else {
+      appendLog(
+        $log,
+        logTypeColors.warn,
+        `Timer '${timerName}' does not exist`,
+      );
+    }
+  };
+
+  console.timeEnd = function (timerName = 'default') {
+    originalConsole.timeEnd(timerName);
+    if (timerName in timers) {
+      appendLog(
+        $log,
+        logTypeColors.log,
+        `${timerName}: ${performance.now() - timers[timerName]}ms`,
+      );
+      delete timers[timerName];
+    } else {
+      appendLog(
+        $log,
+        logTypeColors.warn,
+        `Timer '${timerName}' does not exist`,
+      );
+    }
+  };
+
+  Object.keys(logTypeColors).forEach(function (type) {
+    originalConsole[type] = console[type];
+
+    const colors = logTypeColors[type];
+    console[type] = function (...args) {
+      appendLog($log, colors, ...args);
+      originalConsole[type](...args);
+    };
+  });
+
+  return function reset() {
+    Object.keys(originalConsole).forEach(function (method) {
+      console[method] = originalConsole[method];
+    });
+
+    document.currentScript.removeChild($main);
+    window.removeEventListener(ERROR_EVENT, errorHandler);
+  };
+}
+window.framework = window.framework || {};
+window.framework.console = window.framework.console || {};
+window.framework.console.init = window.framework.console.init || init;
+init();
