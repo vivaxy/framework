@@ -51,6 +51,11 @@ console.timeEnd('a');
 console.time('a');
 console.time('a');
 
+// call sites
 console.log(getCallSites());
 
+// file
+console.log(new File([0], 'MockFile.js'));
+
+// uncaught error
 throw new Error('UncaughtError');

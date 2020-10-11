@@ -38,7 +38,7 @@ function create$clear() {
   $clear.appendChild($line);
   $clear.appendChild($circle);
 
-  $clear.addEventListener('click', function () {
+  $clear.addEventListener('click', function() {
     console.clear();
   });
 
@@ -49,7 +49,7 @@ function create$actionBar() {
   const $actionBar = document.createElement('div');
   $actionBar.style.backgroundColor = '#f3f3f3';
   const $actionButtons = [create$clear()];
-  $actionButtons.forEach(function ($actionButton) {
+  $actionButtons.forEach(function($actionButton) {
     $actionBar.appendChild($actionButton);
   });
   return $actionBar;
@@ -101,11 +101,21 @@ function serialize(arg) {
     }
     return arg.stack;
   }
+  if (arg instanceof File) {
+    return `File ${serialize({
+      type: arg.type,
+      name: arg.name,
+      size: arg.size,
+      lastModified: arg.lastModified,
+      lastModifiedDate: arg.lastModifiedDate,
+      webkitRelativePath: arg.webkitRelativePath,
+    })}`;
+  }
   if (arg instanceof Map) {
     return `Map(${arg.size}) ${serializeMap(arg)}`;
   }
   if (arg instanceof Set) {
-    return `Set(${arg.size}) ${serializeArrayLike(arg)}`;
+    return `Set${serializeArrayLike(arg)}`;
   }
   if (arg instanceof WeakMap || arg instanceof WeakSet) {
     return arg.toString();
@@ -137,7 +147,7 @@ function serialize(arg) {
     }
     return JSON.stringify(
       arg,
-      function (key, value) {
+      function(key, value) {
         if (!key) {
           return value;
         }
@@ -190,12 +200,12 @@ function appendLog(
   $piece.style.whiteSpace = 'pre-wrap';
   $piece.style.wordBreak = 'break-all';
   $piece.style.margin = '1px 8px';
-  args.forEach(function (arg) {
+  args.forEach(function(arg) {
     const $arg = document.createElement('span');
 
     $arg.innerHTML = serialize(arg);
     const styles = getLogStyle(arg);
-    Object.keys(styles).forEach(function (key) {
+    Object.keys(styles).forEach(function(key) {
       $arg.style[key] = styles[key];
     });
     $piece.appendChild($arg);
@@ -240,7 +250,7 @@ function init() {
   };
 
   const timers = {};
-  console.time = function (timerName = 'default') {
+  console.time = function(timerName = 'default') {
     originalConsole.time(timerName);
     if (timerName in timers) {
       appendLog(
@@ -253,7 +263,7 @@ function init() {
     }
   };
 
-  console.timeLog = function (timerName = 'default') {
+  console.timeLog = function(timerName = 'default') {
     originalConsole.timeLog(timerName);
     if (timerName in timers) {
       appendLog(
@@ -270,7 +280,7 @@ function init() {
     }
   };
 
-  console.timeEnd = function (timerName = 'default') {
+  console.timeEnd = function(timerName = 'default') {
     originalConsole.timeEnd(timerName);
     if (timerName in timers) {
       appendLog(
@@ -288,18 +298,18 @@ function init() {
     }
   };
 
-  Object.keys(logTypeColors).forEach(function (type) {
+  Object.keys(logTypeColors).forEach(function(type) {
     originalConsole[type] = console[type];
 
     const colors = logTypeColors[type];
-    console[type] = function (...args) {
+    console[type] = function(...args) {
       appendLog($log, colors, ...args);
       originalConsole[type](...args);
     };
   });
 
   return function reset() {
-    Object.keys(originalConsole).forEach(function (method) {
+    Object.keys(originalConsole).forEach(function(method) {
       console[method] = originalConsole[method];
     });
 
