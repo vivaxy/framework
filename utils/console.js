@@ -71,113 +71,168 @@ const logTypeColors = {
   error: ['#f00', '#fff0f0', '#ffd6d6'],
 };
 
+function serializeError(error) {
+  if (!error.stack) {
+    // DOMException has no stack, captureStackTrace
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(error);
+    } else {
+      error.stack = '(Unavailable error stack)';
+    }
+  }
+  return error.stack;
+}
+
+function serializeFile(file) {
+  return `File ${serialize({
+    type: file.type,
+    name: file.name,
+    size: file.size,
+    lastModified: file.lastModified,
+    lastModifiedDate: file.lastModifiedDate,
+    webkitRelativePath: file.webkitRelativePath,
+  })}`;
+}
+
 function serializeMap(map) {
   const json = {};
   for (const key of map.keys()) {
     json[key] = map.get(key);
   }
-  return JSON.stringify(json, null, 2);
+  return `Map(${map.size}) ${JSON.stringify(json, null, 2)}`;
 }
 
-function serializeArrayLike(arrayLike) {
+function serializeSet(set) {
+  return `Set${serializeArray(set)}`;
+}
+
+function serializeWeakMap(weakMap) {
+  return weakMap.toString();
+}
+
+function serializeWeakSet(weakSet) {
+  return weakSet.toString();
+}
+
+function serializeDocument(document) {
+  const xmlSerializer = new XMLSerializer();
+  return `#document(${xmlSerializer.serializeToString(document)})`;
+}
+
+function serializeElement(element) {
+  const $parent = document.createElement('div');
+  $parent.appendChild(element);
+  return $parent.innerHTML;
+}
+
+function serializeDate(date) {
+  return date.toString();
+}
+
+function serializeArray(arrayLike) {
   const array = Array.from(arrayLike);
   return `(${array.length}) [${array.map(serialize).join(', ')}]`;
 }
 
-function serializeDocument(htmlDocument) {
-  const xmlSerializer = new XMLSerializer();
-  return xmlSerializer.serializeToString(htmlDocument);
+function serializeBoolean(boolean) {
+  return withStyles(String(boolean), {
+    color: '#0d22aa',
+  });
+}
+
+function serializeNumber(number) {
+  return withStyles(String(number), {
+    color: '#1c00cf',
+  });
+}
+
+function serializeSymbol(symbol) {
+  return withStyles(symbol.toString(), {
+    color: '#c41a16',
+  });
+}
+
+function serializeNull(arg) {
+  return String(arg);
+}
+
+function serializeNull(arg) {
+  return String(arg);
+}
+
+function serializeCallSite(callSite) {
+  return `CallSite(${callSite.toString()})`;
+}
+
+function serializeObject(object) {
+  return JSON.stringify(
+    object,
+    function(key, value) {
+      if (!key) {
+        return value;
+      }
+      return serialize(value);
+    },
+    null,
+  );
+}
+
+function serializeFunction(arg) {
+  return String(arg);
 }
 
 function serialize(arg) {
-  if (arg instanceof Error) {
-    if (!arg.stack) {
-      // DOMException has no stack, captureStackTrace
-      if (Error.captureStackTrace) {
-        Error.captureStackTrace(arg);
-      } else {
-        arg.stack = '(Unavailable error stack)';
-      }
-    }
-    return arg.stack;
-  }
-  if (arg instanceof File) {
-    return `File ${serialize({
-      type: arg.type,
-      name: arg.name,
-      size: arg.size,
-      lastModified: arg.lastModified,
-      lastModifiedDate: arg.lastModifiedDate,
-      webkitRelativePath: arg.webkitRelativePath,
-    })}`;
-  }
-  if (arg instanceof Map) {
-    return `Map(${arg.size}) ${serializeMap(arg)}`;
-  }
-  if (arg instanceof Set) {
-    return `Set${serializeArrayLike(arg)}`;
-  }
-  if (arg instanceof WeakMap || arg instanceof WeakSet) {
-    return arg.toString();
-  }
-  if (arg instanceof Document) {
-    return `#document(${serializeDocument(arg)})`;
-  }
-  if (arg instanceof Date) {
-    return arg.toString();
-  }
-  if (typeof arg === 'boolean') {
-    return String(arg);
-  }
-  if (typeof arg === 'number') {
-    return String(arg);
-  }
-  if (typeof arg === 'symbol') {
-    return arg.toString();
-  }
-  if (typeof arg === 'undefined' || arg === null) {
-    return String(arg);
-  }
-  if (arg instanceof Array) {
-    return serializeArrayLike(arg);
-  }
-  if (typeof arg === 'object') {
-    if (arg.constructor.name === 'CallSite') {
-      return `CallSite(${arg.toString()})`;
-    }
-    return JSON.stringify(
-      arg,
-      function(key, value) {
-        if (!key) {
-          return value;
-        }
-        return serialize(value);
-      },
-      2,
-    );
-  }
-  if (typeof arg === 'function') {
-    return String(arg);
+  switch (true) {
+    case arg instanceof Error:
+      return serializeError(arg);
+    case arg instanceof File:
+      return serializeFile(arg);
+    case arg instanceof Map:
+      return serializeMap(arg);
+    case arg instanceof Set:
+      return serializeSet(arg);
+    case arg instanceof WeakMap:
+      return serializeWeakMap(arg);
+    case arg instanceof WeakSet:
+      return serializeWeakSet(arg);
+    case arg instanceof Document:
+      return serializeDocument(arg);
+    case arg instanceof Element:
+      return serializeElement(arg);
+    case arg instanceof Date:
+      return serializeDate(arg);
+    case arg instanceof Array:
+      return serializeArray(arg);
+    case typeof arg === 'boolean':
+      return serializeBoolean(arg);
+    case typeof arg === 'number':
+      return serializeNumber(arg);
+    case typeof arg === 'symbol':
+      return serializeSymbol(arg);
+    case typeof arg === 'undefined':
+      return serializeNull(arg);
+    case arg === null:
+      return serializeNull(arg);
+    case typeof arg === 'object' && arg.constructor.name === 'CallSite':
+      return serializeCallSite(arg);
+    case typeof arg === 'object':
+      return serializeObject(arg);
+    case typeof arg === 'function':
+      return serializeFunction(arg);
   }
   return String(arg);
 }
 
-function getLogStyle(arg) {
-  if (typeof arg === 'boolean') {
-    return {
-      color: '#0d22aa',
-    };
-  }
-  if (typeof arg === 'number') {
-    return {
-      color: '#1c00cf',
-    };
-  }
-  if (typeof arg === 'symbol') {
-    return {
-      color: '#c41a16',
-    };
-  }
+function withStyles(innerHTML, styles) {
+  const $span = document.createElement('span');
+  $span.innerHTML = innerHTML;
+  Object.keys(styles).forEach(function(key) {
+    $span.style[key] = styles[key];
+  });
+  return serializeElement($span);
+}
+
+function getLogStyles(arg) {
   if (typeof arg === 'undefined' || arg === null) {
     return {
       color: '#808080',
@@ -204,10 +259,6 @@ function appendLog(
     const $arg = document.createElement('span');
 
     $arg.innerHTML = serialize(arg);
-    const styles = getLogStyle(arg);
-    Object.keys(styles).forEach(function(key) {
-      $arg.style[key] = styles[key];
-    });
     $piece.appendChild($arg);
 
     const $space = document.createElement('span');

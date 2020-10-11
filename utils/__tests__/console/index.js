@@ -35,6 +35,10 @@ console.log(map);
 console.log(weakMap);
 console.log(set);
 console.log(weakSet);
+console.log(new File([0], 'MockFile.js'));
+console.log(getCallSites());
+console.log(document);
+console.log(document.createElement('p'));
 
 console.debug('debug');
 console.info('info');
@@ -50,12 +54,6 @@ console.timeLog('a');
 console.timeEnd('a');
 console.time('a');
 console.time('a');
-
-// call sites
-console.log(getCallSites());
-
-// file
-console.log(new File([0], 'MockFile.js'));
 
 // uncaught error
 throw new Error('UncaughtError');
