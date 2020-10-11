@@ -5,16 +5,20 @@
 import getCallSites from '../../call-sites.js';
 
 const map = new Map();
-map.set('key', 'value');
+map.set('key1', 'value1');
+map.set('key2', 'value2');
 
 const weakMap = new WeakMap();
-weakMap.set({ key: 'value' }, 'value');
+weakMap.set({ key1: 'value1' }, 'value1');
+weakMap.set({ key2: 'value2' }, 'value2');
 
 const set = new Set();
-set.add('item');
+set.add('item1');
+set.add(2);
 
 const weakSet = new WeakSet();
-weakSet.add({ key: 'value' });
+weakSet.add({ key1: 'value1' });
+weakSet.add({ key2: 'value2' });
 
 console.log('string');
 console.log(true);
@@ -22,6 +26,7 @@ console.log(0);
 console.log(NaN);
 console.log(undefined);
 console.log(null);
+console.log([1, 2, 3]);
 console.log(Symbol('symbol'));
 console.log(new Date());
 console.log({
@@ -37,7 +42,7 @@ console.log(set);
 console.log(weakSet);
 console.log(new File([0], 'MockFile.js'));
 console.log(getCallSites());
-console.log(document);
+console.log(document.implementation.createHTMLDocument('test document'));
 console.log(document.createElement('p'));
 
 console.debug('debug');

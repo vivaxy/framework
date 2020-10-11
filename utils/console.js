@@ -1,7 +1,7 @@
 function create$log() {
   const $log = document.createElement('div');
   $log.style.fontFamily = 'menlo, monospace';
-  $log.style.fontSize = '12px';
+  $log.style.fontSize = '11px';
   $log.style.lineHeight = '16px';
   $log.style.minWidth = '100%';
   return $log;
@@ -71,6 +71,19 @@ const logTypeColors = {
   error: ['#f00', '#fff0f0', '#ffd6d6'],
 };
 
+function elementToString(element) {
+  const $parent = document.createElement('div');
+  $parent.appendChild(element);
+  return $parent.innerHTML;
+}
+
+function serializeObjectValue(value) {
+  if (typeof value === 'string') {
+    return withStringStyle(`"${serialize(value)}"`);
+  }
+  return serialize(value);
+}
+
 function serializeError(error) {
   if (!error.stack) {
     // DOMException has no stack, captureStackTrace
@@ -84,7 +97,7 @@ function serializeError(error) {
 }
 
 function serializeFile(file) {
-  return `File ${serialize({
+  return `${withItalicStyle('File ')}${serialize({
     type: file.type,
     name: file.name,
     size: file.size,
@@ -95,34 +108,53 @@ function serializeFile(file) {
 }
 
 function serializeMap(map) {
-  const json = {};
-  for (const key of map.keys()) {
-    json[key] = map.get(key);
-  }
-  return `Map(${map.size}) ${JSON.stringify(json, null, 2)}`;
+  return withItalicStyle(
+    `Map(${map.size}) { ${Array.from(map.keys())
+      .map(function(key) {
+        return `${withStringStyle(
+          `"${key}"`,
+        )} => ${serializeObjectValue(map.get(key))}`;
+      })
+      .join(', ')} }`,
+  );
 }
 
 function serializeSet(set) {
-  return `Set${serializeArray(set)}`;
+  const array = Array.from(set);
+  return withItalicStyle(
+    `Set(${array.length}) { ${array
+      .map(function(item) {
+        return serializeObjectValue(item);
+      })
+      .join(', ')} }`,
+  );
 }
 
-function serializeWeakMap(weakMap) {
-  return weakMap.toString();
+function serializeWeakMap() {
+  return withItalicStyle(`WeakMap {…}`);
 }
 
 function serializeWeakSet(weakSet) {
-  return weakSet.toString();
+  return withItalicStyle(`WeakSet {…}`);
+}
+
+function encodeHTML(html) {
+  const div = document.createElement('div');
+  div.textContent = html;
+  return div.innerHTML;
 }
 
 function serializeDocument(document) {
   const xmlSerializer = new XMLSerializer();
-  return `#document(${xmlSerializer.serializeToString(document)})`;
+  return `#document ${encodeHTML(xmlSerializer.serializeToString(document))}`;
 }
 
 function serializeElement(element) {
   const $parent = document.createElement('div');
   $parent.appendChild(element);
-  return $parent.innerHTML;
+  return withStyles(encodeHTML($parent.innerHTML), {
+    color: 'rgb(136 18 128)',
+  });
 }
 
 function serializeDate(date) {
@@ -131,7 +163,9 @@ function serializeDate(date) {
 
 function serializeArray(arrayLike) {
   const array = Array.from(arrayLike);
-  return `(${array.length}) [${array.map(serialize).join(', ')}]`;
+  return withItalicStyle(
+    `(${array.length}) [${array.map(serialize).join(', ')}]`,
+  );
 }
 
 function serializeBoolean(boolean) {
@@ -147,17 +181,19 @@ function serializeNumber(number) {
 }
 
 function serializeSymbol(symbol) {
-  return withStyles(symbol.toString(), {
-    color: '#c41a16',
+  return withStringStyle(symbol.toString());
+}
+
+function serializeUndefined(arg) {
+  return withStyles(String(arg), {
+    color: '#808080',
   });
 }
 
 function serializeNull(arg) {
-  return String(arg);
-}
-
-function serializeNull(arg) {
-  return String(arg);
+  return withStyles(String(arg), {
+    color: '#808080',
+  });
 }
 
 function serializeCallSite(callSite) {
@@ -165,20 +201,17 @@ function serializeCallSite(callSite) {
 }
 
 function serializeObject(object) {
-  return JSON.stringify(
-    object,
-    function(key, value) {
-      if (!key) {
-        return value;
-      }
-      return serialize(value);
-    },
-    null,
+  return withItalicStyle(
+    `{ ${Object.keys(object)
+      .map(function(key) {
+        return `${key}: ${serializeObjectValue(object[key])}`;
+      })
+      .join(', ')} }`,
   );
 }
 
 function serializeFunction(arg) {
-  return String(arg);
+  return withItalicStyle(String(arg));
 }
 
 function serialize(arg) {
@@ -210,7 +243,7 @@ function serialize(arg) {
     case typeof arg === 'symbol':
       return serializeSymbol(arg);
     case typeof arg === 'undefined':
-      return serializeNull(arg);
+      return serializeUndefined(arg);
     case arg === null:
       return serializeNull(arg);
     case typeof arg === 'object' && arg.constructor.name === 'CallSite':
@@ -229,21 +262,19 @@ function withStyles(innerHTML, styles) {
   Object.keys(styles).forEach(function(key) {
     $span.style[key] = styles[key];
   });
-  return serializeElement($span);
+  return elementToString($span);
 }
 
-function getLogStyles(arg) {
-  if (typeof arg === 'undefined' || arg === null) {
-    return {
-      color: '#808080',
-    };
-  }
-  if (typeof arg === 'function') {
-    return {
-      fontStyle: 'italic',
-    };
-  }
-  return {};
+function withItalicStyle(innerHTML) {
+  return withStyles(innerHTML, {
+    fontStyle: 'italic',
+  });
+}
+
+function withStringStyle(innerHTML) {
+  return withStyles(innerHTML, {
+    color: '#c41a16',
+  });
 }
 
 function appendLog(
