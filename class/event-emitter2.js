@@ -2,7 +2,6 @@
  * @since 2018-05-20 14:05:19
  * @author vivaxy
  */
-
 export default class EventEmitter {
   constructor() {
     this.events = {};
