@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.15](https://github.com/vivaxy/framework/compare/v0.0.14...v0.0.15) (2020-11-08)
+
+
+### Features
+
+* **events:** :sparkles: add event.js ([115d3ba](https://github.com/vivaxy/framework/commit/115d3baaee13fd65022fd934e047bd75329d32b4))
+
 ### [0.0.14](https://github.com/vivaxy/framework/compare/v0.0.13...v0.0.14) (2020-11-08)
 
 
