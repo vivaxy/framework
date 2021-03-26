@@ -38,7 +38,7 @@ function create$clear() {
   $clear.appendChild($line);
   $clear.appendChild($circle);
 
-  $clear.addEventListener('click', function() {
+  $clear.addEventListener('click', function () {
     console.clear();
   });
 
@@ -49,7 +49,7 @@ function create$actionBar() {
   const $actionBar = document.createElement('div');
   $actionBar.style.backgroundColor = '#f3f3f3';
   const $actionButtons = [create$clear()];
-  $actionButtons.forEach(function($actionButton) {
+  $actionButtons.forEach(function ($actionButton) {
     $actionBar.appendChild($actionButton);
   });
   return $actionBar;
@@ -110,7 +110,7 @@ function serializeFile(file) {
 function serializeMap(map) {
   return withItalicStyle(
     `Map(${map.size}) { ${Array.from(map.keys())
-      .map(function(key) {
+      .map(function (key) {
         return `${withStringStyle(
           `"${key}"`,
         )} => ${serializeObjectValue(map.get(key))}`;
@@ -123,7 +123,7 @@ function serializeSet(set) {
   const array = Array.from(set);
   return withItalicStyle(
     `Set(${array.length}) { ${array
-      .map(function(item) {
+      .map(function (item) {
         return serializeObjectValue(item);
       })
       .join(', ')} }`,
@@ -203,7 +203,7 @@ function serializeCallSite(callSite) {
 function serializeObject(object) {
   return withItalicStyle(
     `{ ${Object.keys(object)
-      .map(function(key) {
+      .map(function (key) {
         return `${key}: ${serializeObjectValue(object[key])}`;
       })
       .join(', ')} }`,
@@ -259,7 +259,7 @@ function serialize(arg) {
 function withStyles(innerHTML, styles) {
   const $span = document.createElement('span');
   $span.innerHTML = innerHTML;
-  Object.keys(styles).forEach(function(key) {
+  Object.keys(styles).forEach(function (key) {
     $span.style[key] = styles[key];
   });
   return elementToString($span);
@@ -286,7 +286,7 @@ function appendLog(
   $piece.style.whiteSpace = 'pre-wrap';
   $piece.style.wordBreak = 'break-all';
   $piece.style.margin = '1px 8px';
-  args.forEach(function(arg) {
+  args.forEach(function (arg) {
     const $arg = document.createElement('span');
 
     $arg.innerHTML = serialize(arg);
@@ -314,7 +314,7 @@ function init() {
   document.currentScript.insertAdjacentElement('afterend', $main);
   const ERROR_EVENT = 'error';
   function errorHandler(e) {
-    console.error(e.error);
+    console.error(e);
     e.preventDefault();
   }
   window.addEventListener(ERROR_EVENT, errorHandler);
@@ -332,7 +332,7 @@ function init() {
   };
 
   const timers = {};
-  console.time = function(timerName = 'default') {
+  console.time = function (timerName = 'default') {
     originalConsole.time(timerName);
     if (timerName in timers) {
       appendLog(
@@ -345,7 +345,7 @@ function init() {
     }
   };
 
-  console.timeLog = function(timerName = 'default') {
+  console.timeLog = function (timerName = 'default') {
     originalConsole.timeLog(timerName);
     if (timerName in timers) {
       appendLog(
@@ -362,7 +362,7 @@ function init() {
     }
   };
 
-  console.timeEnd = function(timerName = 'default') {
+  console.timeEnd = function (timerName = 'default') {
     originalConsole.timeEnd(timerName);
     if (timerName in timers) {
       appendLog(
@@ -380,18 +380,18 @@ function init() {
     }
   };
 
-  Object.keys(logTypeColors).forEach(function(type) {
+  Object.keys(logTypeColors).forEach(function (type) {
     originalConsole[type] = console[type];
 
     const colors = logTypeColors[type];
-    console[type] = function(...args) {
+    console[type] = function (...args) {
       appendLog($log, colors, ...args);
       originalConsole[type](...args);
     };
   });
 
   return function reset() {
-    Object.keys(originalConsole).forEach(function(method) {
+    Object.keys(originalConsole).forEach(function (method) {
       console[method] = originalConsole[method];
     });
 
