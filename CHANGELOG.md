@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.17](https://github.com/vivaxy/framework/compare/v0.0.16...v0.0.17) (2021-03-26)
+
+
+### Bug Fixes
+
+* **console:** :bug: fix serialize a object without constructor ([15c9446](https://github.com/vivaxy/framework/commit/15c9446a0d06ad5aca92fa5095e7c8667dcfa975))
+
 ### [0.0.16](https://github.com/vivaxy/framework/compare/v0.0.15...v0.0.16) (2021-03-26)
 
 
