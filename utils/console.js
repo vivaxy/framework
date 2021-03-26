@@ -246,7 +246,9 @@ function serialize(arg) {
       return serializeUndefined(arg);
     case arg === null:
       return serializeNull(arg);
-    case typeof arg === 'object' && arg.constructor.name === 'CallSite':
+    case typeof arg === 'object' &&
+      arg.constructor &&
+      arg.constructor.name === 'CallSite':
       return serializeCallSite(arg);
     case typeof arg === 'object':
       return serializeObject(arg);
