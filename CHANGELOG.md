@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.16](https://github.com/vivaxy/framework/compare/v0.0.15...v0.0.16) (2021-03-26)
+
+
+### Bug Fixes
+
+* **console:** fix window error ([d17b7b7](https://github.com/vivaxy/framework/commit/d17b7b72287567a17fa66601489392caa5bc107e))
+
 ### [0.0.15](https://github.com/vivaxy/framework/compare/v0.0.14...v0.0.15) (2020-11-08)
 
 
