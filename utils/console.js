@@ -84,6 +84,29 @@ function serializeObjectValue(value) {
   return serialize(value);
 }
 
+function serializeSelection(selection) {
+  const {
+    type,
+    isCollapsed,
+    rangeCount,
+
+    anchorNode,
+    anchorOffset,
+    focusNode,
+    focusOffset,
+  } = selection;
+  return serialize({
+    type,
+    isCollapsed,
+    rangeCount,
+
+    anchorNode,
+    anchorOffset,
+    focusNode,
+    focusOffset,
+  });
+}
+
 function serializeError(error) {
   if (!error.stack) {
     // DOMException has no stack, captureStackTrace
@@ -147,6 +170,12 @@ function encodeHTML(html) {
 function serializeDocument(document) {
   const xmlSerializer = new XMLSerializer();
   return `#document ${encodeHTML(xmlSerializer.serializeToString(document))}`;
+}
+
+function serializeText(text) {
+  return withStyles('text', {
+    color: 'rgb(136 18 128)',
+  });
 }
 
 function serializeElement(element) {
@@ -216,6 +245,12 @@ function serializeFunction(arg) {
 
 function serialize(arg) {
   switch (true) {
+    // ===
+    case arg === null:
+      return serializeNull(arg);
+    // instanceof
+    case arg instanceof Selection:
+      return serializeSelection(arg);
     case arg instanceof Error:
       return serializeError(arg);
     case arg instanceof File:
@@ -230,12 +265,15 @@ function serialize(arg) {
       return serializeWeakSet(arg);
     case arg instanceof Document:
       return serializeDocument(arg);
+    case arg instanceof Text:
+      return serializeText(arg);
     case arg instanceof Element:
       return serializeElement(arg);
     case arg instanceof Date:
       return serializeDate(arg);
     case arg instanceof Array:
       return serializeArray(arg);
+    // typeof
     case typeof arg === 'boolean':
       return serializeBoolean(arg);
     case typeof arg === 'number':
@@ -244,8 +282,6 @@ function serialize(arg) {
       return serializeSymbol(arg);
     case typeof arg === 'undefined':
       return serializeUndefined(arg);
-    case arg === null:
-      return serializeNull(arg);
     case typeof arg === 'object' &&
       arg.constructor &&
       arg.constructor.name === 'CallSite':
