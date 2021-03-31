@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.19](https://github.com/vivaxy/framework/compare/v0.0.17...v0.0.19) (2021-03-31)
+
+
+### Features
+
+* **console:** :sparkles: add support for Selection and Text object ([c06975a](https://github.com/vivaxy/framework/commit/c06975a83e6d079317928df4adfa02f93089da8a))
+
+
+### Bug Fixes
+
+* **console:** :bug: fix Element removal when serializing ([e8f7f87](https://github.com/vivaxy/framework/commit/e8f7f87491af8c98070295947682c9daa93aa302))
+
 ### [0.0.18](https://github.com/vivaxy/framework/compare/v0.0.17...v0.0.18) (2021-03-31)
 
 
