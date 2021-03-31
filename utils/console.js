@@ -107,6 +107,32 @@ function serializeSelection(selection) {
   });
 }
 
+function serializeRange(range) {
+  const {
+    collapsed,
+    commonAncestorContainer,
+    startContainer,
+    startOffset,
+    endContainer,
+    endOffset,
+  } = range;
+  return serialize({
+    collapsed,
+    commonAncestorContainer,
+    startContainer,
+    startOffset,
+    endContainer,
+    endOffset,
+  });
+}
+
+function serializeErrorEvent(errorEvent) {
+  return serialize({
+    message: errorEvent.message,
+    error: errorEvent.error,
+  });
+}
+
 function serializeError(error) {
   if (!error.stack) {
     // DOMException has no stack, captureStackTrace
@@ -168,21 +194,25 @@ function encodeHTML(html) {
 }
 
 function serializeDocument(document) {
-  const xmlSerializer = new XMLSerializer();
-  return `#document ${encodeHTML(xmlSerializer.serializeToString(document))}`;
+  // const xmlSerializer = new XMLSerializer();
+  // return `#document ${encodeHTML(xmlSerializer.serializeToString(document))}`;
+  return `#document`;
 }
 
 function serializeText(text) {
   return withStyles('text', {
-    color: 'rgb(136 18 128)',
+    color: 'rgb(136, 18, 128)',
   });
 }
 
 function serializeElement(element) {
-  const $parent = document.createElement('div');
-  $parent.appendChild(element.cloneNode(true));
-  return withStyles(encodeHTML($parent.innerHTML), {
-    color: 'rgb(136 18 128)',
+  // const $parent = document.createElement('div');
+  // $parent.appendChild(element.cloneNode(true));
+  // return withStyles(encodeHTML($parent.innerHTML), {
+  //   color: 'rgb(136, 18, 128)',
+  // });
+  return withStyles(element.localName, {
+    color: 'rgb(126, 18, 128)',
   });
 }
 
@@ -251,6 +281,10 @@ function serialize(arg) {
     // instanceof
     case arg instanceof Selection:
       return serializeSelection(arg);
+    case arg instanceof Range:
+      return serializeRange(arg);
+    case arg instanceof ErrorEvent:
+      return serializeErrorEvent(arg);
     case arg instanceof Error:
       return serializeError(arg);
     case arg instanceof File:
