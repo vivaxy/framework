@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.18](https://github.com/vivaxy/framework/compare/v0.0.17...v0.0.18) (2021-03-31)
+
+
+### Features
+
+* **console:** :sparkles: add support for Selection and Text object ([d25a051](https://github.com/vivaxy/framework/commit/d25a051746cbd9d618321c24e348bee0a93769d1))
+
 ### [0.0.17](https://github.com/vivaxy/framework/compare/v0.0.16...v0.0.17) (2021-03-26)
 
 
