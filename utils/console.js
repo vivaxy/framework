@@ -180,7 +180,7 @@ function serializeText(text) {
 
 function serializeElement(element) {
   const $parent = document.createElement('div');
-  $parent.appendChild(element);
+  $parent.appendChild(element.cloneNode(true));
   return withStyles(encodeHTML($parent.innerHTML), {
     color: 'rgb(136 18 128)',
   });
