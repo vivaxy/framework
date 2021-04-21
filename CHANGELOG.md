@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.20](https://github.com/vivaxy/framework/compare/v0.0.19...v0.0.20) (2021-04-21)
+
+
+### Features
+
+* **console:** :sparkles: support Range and ErrorEvent, update Element and Document ([92a1f65](https://github.com/vivaxy/framework/commit/92a1f65cac4d85926ace618c806cd54a0243bccb))
+* **console:** support log circular object structure ([99fbde6](https://github.com/vivaxy/framework/commit/99fbde65bc50122581af7e6323754eccb860fea0))
+* **console:** support log circular object structure ([6fce17c](https://github.com/vivaxy/framework/commit/6fce17c243d227a0e656122b85d4e46bbb120015))
+
 ### [0.0.19](https://github.com/vivaxy/framework/compare/v0.0.17...v0.0.19) (2021-03-31)
 
 
