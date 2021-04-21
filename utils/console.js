@@ -77,11 +77,11 @@ function elementToString(element) {
   return $parent.innerHTML;
 }
 
-function serializeObjectValue(value) {
+function serializeObjectValue(value, met) {
   if (typeof value === 'string') {
-    return withStringStyle(`"${serialize(value)}"`);
+    return withStringStyle(`"${serialize(value, met)}"`);
   }
-  return serialize(value);
+  return serialize(value, met);
 }
 
 function serializeSelection(selection) {
@@ -259,11 +259,15 @@ function serializeCallSite(callSite) {
   return `CallSite(${callSite.toString()})`;
 }
 
-function serializeObject(object) {
+function serializeObject(object, met = new Set()) {
+  if (met.has(object)) {
+    return '[...circular structure]';
+  }
+  met.add(object);
   return withItalicStyle(
     `{ ${Object.keys(object)
       .map(function (key) {
-        return `${key}: ${serializeObjectValue(object[key])}`;
+        return `${key}: ${serializeObjectValue(object[key], met)}`;
       })
       .join(', ')} }`,
   );
@@ -273,7 +277,7 @@ function serializeFunction(arg) {
   return withItalicStyle(String(arg));
 }
 
-function serialize(arg) {
+function serialize(arg, met) {
   switch (true) {
     // ===
     case arg === null:
@@ -321,7 +325,7 @@ function serialize(arg) {
       arg.constructor.name === 'CallSite':
       return serializeCallSite(arg);
     case typeof arg === 'object':
-      return serializeObject(arg);
+      return serializeObject(arg, met);
     case typeof arg === 'function':
       return serializeFunction(arg);
   }
@@ -385,10 +389,12 @@ function init() {
   $main.appendChild($log);
   document.currentScript.insertAdjacentElement('afterend', $main);
   const ERROR_EVENT = 'error';
+
   function errorHandler(e) {
     console.error(e);
     e.preventDefault();
   }
+
   window.addEventListener(ERROR_EVENT, errorHandler);
 
   const originalConsole = {
@@ -471,6 +477,7 @@ function init() {
     window.removeEventListener(ERROR_EVENT, errorHandler);
   };
 }
+
 window.framework = window.framework || {};
 window.framework.console = window.framework.console || {};
 window.framework.console.init = window.framework.console.init || init;
