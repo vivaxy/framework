@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.21](https://github.com/vivaxy/framework/compare/v0.0.20...v0.0.21) (2021-04-21)
+
+
+### Bug Fixes
+
+* **console:** fix `met.has not find` error ([02cdac0](https://github.com/vivaxy/framework/commit/02cdac0095efd899af8bf6c18bf4e5af5fe81ca5))
+
 ### [0.0.20](https://github.com/vivaxy/framework/compare/v0.0.19...v0.0.20) (2021-04-21)
 
 
