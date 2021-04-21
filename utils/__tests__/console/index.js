@@ -60,5 +60,14 @@ console.timeEnd('a');
 console.time('a');
 console.time('a');
 
+// circular structure
+const circularObject = {};
+circularObject.circularObject = circularObject;
+console.log(circularObject);
+const notCircularObject = { a: 1, b: 1 };
+console.log(notCircularObject);
+
+// new testcase goes here
+
 // uncaught error
 throw new Error('UncaughtError');
