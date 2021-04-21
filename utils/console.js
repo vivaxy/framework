@@ -38,7 +38,7 @@ function create$clear() {
   $clear.appendChild($line);
   $clear.appendChild($circle);
 
-  $clear.addEventListener('click', function () {
+  $clear.addEventListener('click', function() {
     console.clear();
   });
 
@@ -49,7 +49,7 @@ function create$actionBar() {
   const $actionBar = document.createElement('div');
   $actionBar.style.backgroundColor = '#f3f3f3';
   const $actionButtons = [create$clear()];
-  $actionButtons.forEach(function ($actionButton) {
+  $actionButtons.forEach(function($actionButton) {
     $actionBar.appendChild($actionButton);
   });
   return $actionBar;
@@ -84,7 +84,7 @@ function serializeObjectValue(value, met) {
   return serialize(value, met);
 }
 
-function serializeSelection(selection) {
+function serializeSelection(selection, met) {
   const {
     type,
     isCollapsed,
@@ -104,10 +104,10 @@ function serializeSelection(selection) {
     anchorOffset,
     focusNode,
     focusOffset,
-  });
+  }, met);
 }
 
-function serializeRange(range) {
+function serializeRange(range, met) {
   const {
     collapsed,
     commonAncestorContainer,
@@ -123,14 +123,14 @@ function serializeRange(range) {
     startOffset,
     endContainer,
     endOffset,
-  });
+  }, met);
 }
 
-function serializeErrorEvent(errorEvent) {
+function serializeErrorEvent(errorEvent, met) {
   return serialize({
     message: errorEvent.message,
     error: errorEvent.error,
-  });
+  }, met);
 }
 
 function serializeError(error) {
@@ -145,7 +145,7 @@ function serializeError(error) {
   return error.stack;
 }
 
-function serializeFile(file) {
+function serializeFile(file, met) {
   return `${withItalicStyle('File ')}${serialize({
     type: file.type,
     name: file.name,
@@ -153,27 +153,27 @@ function serializeFile(file) {
     lastModified: file.lastModified,
     lastModifiedDate: file.lastModifiedDate,
     webkitRelativePath: file.webkitRelativePath,
-  })}`;
+  }, met)}`;
 }
 
-function serializeMap(map) {
+function serializeMap(map, met) {
   return withItalicStyle(
     `Map(${map.size}) { ${Array.from(map.keys())
-      .map(function (key) {
+      .map(function(key) {
         return `${withStringStyle(
           `"${key}"`,
-        )} => ${serializeObjectValue(map.get(key))}`;
+        )} => ${serializeObjectValue(map.get(key), met)}`;
       })
       .join(', ')} }`,
   );
 }
 
-function serializeSet(set) {
+function serializeSet(set, met) {
   const array = Array.from(set);
   return withItalicStyle(
     `Set(${array.length}) { ${array
-      .map(function (item) {
-        return serializeObjectValue(item);
+      .map(function(item) {
+        return serializeObjectValue(item, met);
       })
       .join(', ')} }`,
   );
@@ -220,12 +220,12 @@ function serializeDate(date) {
   return date.toString();
 }
 
-function serializeArray(arrayLike) {
+function serializeArray(arrayLike, met) {
   const array = Array.from(arrayLike);
   return withItalicStyle(
     `(${array.length}) [${array
-      .map(function (item) {
-        return serialize(item);
+      .map(function(item) {
+        return serialize(item, met);
       })
       .join(', ')}]`,
   );
@@ -270,7 +270,7 @@ function serializeObject(object, met = new Set()) {
   met.add(object);
   return withItalicStyle(
     `{ ${Object.keys(object)
-      .map(function (key) {
+      .map(function(key) {
         return `${key}: ${serializeObjectValue(object[key], met)}`;
       })
       .join(', ')} }`,
@@ -288,19 +288,19 @@ function serialize(arg, met) {
       return serializeNull(arg);
     // instanceof
     case arg instanceof Selection:
-      return serializeSelection(arg);
+      return serializeSelection(arg, met);
     case arg instanceof Range:
-      return serializeRange(arg);
+      return serializeRange(arg, met);
     case arg instanceof ErrorEvent:
-      return serializeErrorEvent(arg);
+      return serializeErrorEvent(arg, met);
     case arg instanceof Error:
       return serializeError(arg);
     case arg instanceof File:
-      return serializeFile(arg);
+      return serializeFile(arg, met);
     case arg instanceof Map:
-      return serializeMap(arg);
+      return serializeMap(arg, met);
     case arg instanceof Set:
-      return serializeSet(arg);
+      return serializeSet(arg, met);
     case arg instanceof WeakMap:
       return serializeWeakMap(arg);
     case arg instanceof WeakSet:
@@ -314,7 +314,7 @@ function serialize(arg, met) {
     case arg instanceof Date:
       return serializeDate(arg);
     case arg instanceof Array:
-      return serializeArray(arg);
+      return serializeArray(arg, met);
     // typeof
     case typeof arg === 'boolean':
       return serializeBoolean(arg);
@@ -325,8 +325,8 @@ function serialize(arg, met) {
     case typeof arg === 'undefined':
       return serializeUndefined(arg);
     case typeof arg === 'object' &&
-      arg.constructor &&
-      arg.constructor.name === 'CallSite':
+    arg.constructor &&
+    arg.constructor.name === 'CallSite':
       return serializeCallSite(arg);
     case typeof arg === 'object':
       return serializeObject(arg, met);
@@ -339,7 +339,7 @@ function serialize(arg, met) {
 function withStyles(innerHTML, styles) {
   const $span = document.createElement('span');
   $span.innerHTML = innerHTML;
-  Object.keys(styles).forEach(function (key) {
+  Object.keys(styles).forEach(function(key) {
     $span.style[key] = styles[key];
   });
   return elementToString($span);
@@ -366,7 +366,7 @@ function appendLog(
   $piece.style.whiteSpace = 'pre-wrap';
   $piece.style.wordBreak = 'break-all';
   $piece.style.margin = '1px 8px';
-  args.forEach(function (arg) {
+  args.forEach(function(arg) {
     const $arg = document.createElement('span');
 
     $arg.innerHTML = serialize(arg);
@@ -414,7 +414,7 @@ function init() {
   };
 
   const timers = {};
-  console.time = function (timerName = 'default') {
+  console.time = function(timerName = 'default') {
     originalConsole.time(timerName);
     if (timerName in timers) {
       appendLog(
@@ -427,7 +427,7 @@ function init() {
     }
   };
 
-  console.timeLog = function (timerName = 'default') {
+  console.timeLog = function(timerName = 'default') {
     originalConsole.timeLog(timerName);
     if (timerName in timers) {
       appendLog(
@@ -444,7 +444,7 @@ function init() {
     }
   };
 
-  console.timeEnd = function (timerName = 'default') {
+  console.timeEnd = function(timerName = 'default') {
     originalConsole.timeEnd(timerName);
     if (timerName in timers) {
       appendLog(
@@ -462,18 +462,18 @@ function init() {
     }
   };
 
-  Object.keys(logTypeColors).forEach(function (type) {
+  Object.keys(logTypeColors).forEach(function(type) {
     originalConsole[type] = console[type];
 
     const colors = logTypeColors[type];
-    console[type] = function (...args) {
+    console[type] = function(...args) {
       appendLog($log, colors, ...args);
       originalConsole[type](...args);
     };
   });
 
   return function reset() {
-    Object.keys(originalConsole).forEach(function (method) {
+    Object.keys(originalConsole).forEach(function(method) {
       console[method] = originalConsole[method];
     });
 

@@ -64,6 +64,9 @@ console.time('a');
 const circularObject = {};
 circularObject.circularObject = circularObject;
 console.log(circularObject);
+const circularObjectWithArray = {};
+circularObjectWithArray.array = [circularObjectWithArray];
+console.log(circularObjectWithArray);
 const notCircularObject = { a: 1, b: 1 };
 console.log(notCircularObject);
 
