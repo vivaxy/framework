@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.22](https://github.com/vivaxy/framework/compare/v0.0.21...v0.0.22) (2021-04-21)
+
+
+### Bug Fixes
+
+* **console:** fix circular structure in object array ([636a006](https://github.com/vivaxy/framework/commit/636a00682f90f0bbea0141346d69be82f22e9351))
+
 ### [0.0.21](https://github.com/vivaxy/framework/compare/v0.0.20...v0.0.21) (2021-04-21)
 
 
