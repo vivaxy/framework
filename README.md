@@ -9,7 +9,7 @@ import EventEmitter from 'https://unpkg.com/@vivaxy/framework/class/event-emitte
 ```
 
 ```html
-<script src="https://unpkg.com/@vivaxy/framework/utils/console.js"></script>
+<script src="https://unpkg.com/@vivaxy/framework/utils/console.js" crossorigin="anonymous"></script>
 ```
 
 # Development

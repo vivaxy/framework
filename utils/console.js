@@ -223,7 +223,11 @@ function serializeDate(date) {
 function serializeArray(arrayLike) {
   const array = Array.from(arrayLike);
   return withItalicStyle(
-    `(${array.length}) [${array.map(serialize).join(', ')}]`,
+    `(${array.length}) [${array
+      .map(function (item) {
+        return serialize(item);
+      })
+      .join(', ')}]`,
   );
 }
 
