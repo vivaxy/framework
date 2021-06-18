@@ -1,3 +1,12 @@
+function escapeHTML(unsafe) {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function create$log() {
   const $log = document.createElement('div');
   $log.style.fontFamily = 'menlo, monospace';
@@ -183,7 +192,7 @@ function serializeWeakMap() {
   return withItalicStyle(`WeakMap {…}`);
 }
 
-function serializeWeakSet(weakSet) {
+function serializeWeakSet() {
   return withItalicStyle(`WeakSet {…}`);
 }
 
@@ -193,13 +202,13 @@ function encodeHTML(html) {
   return div.innerHTML;
 }
 
-function serializeDocument(document) {
+function serializeDocument() {
   // const xmlSerializer = new XMLSerializer();
   // return `#document ${encodeHTML(xmlSerializer.serializeToString(document))}`;
   return `#document`;
 }
 
-function serializeText(text) {
+function serializeText() {
   return withStyles('text', {
     color: 'rgb(136, 18, 128)',
   });
@@ -332,8 +341,10 @@ function serialize(arg, met) {
       return serializeObject(arg, met);
     case typeof arg === 'function':
       return serializeFunction(arg);
+    case typeof arg === 'string':
+      return escapeHTML(arg);
   }
-  return String(arg);
+  throw new Error('Unexpected type');
 }
 
 function withStyles(innerHTML, styles) {

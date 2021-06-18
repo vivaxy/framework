@@ -21,6 +21,7 @@ weakSet.add({ key1: 'value1' });
 weakSet.add({ key2: 'value2' });
 
 console.log('string');
+console.log('<p></p>');
 console.log(true);
 console.log(0);
 console.log(NaN);
