@@ -71,6 +71,9 @@ console.log(circularObjectWithArray);
 const notCircularObject = { a: 1, b: 1 };
 console.log(notCircularObject);
 
+// native console
+console.nativeConsole.log('only log in browser dev tools');
+
 // new testcase goes here
 
 // uncaught error
