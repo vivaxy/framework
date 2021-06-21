@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/vivaxy/framework/compare/v1.0.2...v1.1.0) (2021-06-21)
+
+
+### Features
+
+* **console:** export native console ([a46c093](https://github.com/vivaxy/framework/commit/a46c093143e6f57caf7e7a558e2a5fd1fe649642))
+
 ### [1.0.2](https://github.com/vivaxy/framework/compare/v1.0.0...v1.0.2) (2021-06-18)
 
 
