@@ -418,7 +418,7 @@ function init() {
   const ERROR_EVENT = 'error';
 
   function errorHandler(e) {
-    console.error(e);
+    console.error(e.error);
     e.preventDefault();
   }
 
