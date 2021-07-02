@@ -36,7 +36,13 @@ console.log({
 console.log(function fn(a, b) {
   return a + b;
 });
-console.log(new Error('1'.repeat(100)));
+try {
+  [0].map(function () {
+    console.log(NOT_DEFINED);
+  });
+} catch (e) {
+  console.error(e);
+}
 console.log(map);
 console.log(weakMap);
 console.log(set);

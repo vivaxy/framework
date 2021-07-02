@@ -315,7 +315,7 @@ function serialize(arg, met) {
     case arg instanceof ErrorEvent:
       return serializeErrorEvent(arg, met);
     case arg instanceof Error:
-      return serializeError(arg);
+      return escapeHTML(serializeError(arg));
     case arg instanceof File:
       return serializeFile(arg, met);
     case arg instanceof Map:
