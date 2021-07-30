@@ -56,6 +56,7 @@ console.debug('debug');
 console.info('info');
 console.warn('warn');
 console.error('error');
+console.assert(false, 1, 2);
 
 // normal timers
 console.time();

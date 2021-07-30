@@ -429,6 +429,7 @@ function init() {
     time: console.time,
     timeLog: console.timeLog,
     timeEnd: console.timeEnd,
+    assert: console.assert,
   };
 
   console.clear = function clear() {
@@ -436,8 +437,15 @@ function init() {
     nativeConsole.clear();
   };
 
+  console.assert = function assert(assertion, ...messages) {
+    nativeConsole.assert(assertion, ...messages);
+    if (!assertion) {
+      appendLog($log, logTypeColors.error, 'Assertion failed:', ...messages);
+    }
+  };
+
   const timers = {};
-  console.time = function (timerName = 'default') {
+  console.time = function time(timerName = 'default') {
     nativeConsole.time(timerName);
     if (timerName in timers) {
       appendLog(
@@ -450,7 +458,7 @@ function init() {
     }
   };
 
-  console.timeLog = function (timerName = 'default') {
+  console.timeLog = function timeLog(timerName = 'default') {
     nativeConsole.timeLog(timerName);
     if (timerName in timers) {
       appendLog(
@@ -467,7 +475,7 @@ function init() {
     }
   };
 
-  console.timeEnd = function (timerName = 'default') {
+  console.timeEnd = function timeEnd(timerName = 'default') {
     nativeConsole.timeEnd(timerName);
     if (timerName in timers) {
       appendLog(
@@ -490,8 +498,8 @@ function init() {
 
     const colors = logTypeColors[type];
     console[type] = function (...args) {
-      appendLog($log, colors, ...args);
       nativeConsole[type](...args);
+      appendLog($log, colors, ...args);
     };
   });
 
