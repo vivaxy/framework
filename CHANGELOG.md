@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/vivaxy/framework/compare/v1.0.2...v1.4.0) (2021-07-30)
+
+
+### Features
+
+* **console:** export native console ([a46c093](https://github.com/vivaxy/framework/commit/a46c093143e6f57caf7e7a558e2a5fd1fe649642))
+
+
+### Bug Fixes
+
+* **console:** fix error stack missing `<anonymous>` code location ([561371e](https://github.com/vivaxy/framework/commit/561371e46f10df9ec543d93e2367985cdd82743e))
+* **console:** fix error wrapped in event ([4c323ab](https://github.com/vivaxy/framework/commit/4c323ab21ad1aa5072b97fc3b8a5d293d106ac19))
+
 ## [1.3.0](https://github.com/vivaxy/framework/compare/v1.0.2...v1.3.0) (2021-07-02)
 
 
