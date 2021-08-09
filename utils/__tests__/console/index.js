@@ -68,6 +68,41 @@ console.timeEnd('a');
 console.time('a');
 console.time('a');
 
+// table
+console.table(['apples', 'oranges', 'bananas']);
+
+function Person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+const me = new Person('John', 'Smith');
+console.table(me);
+
+const people = [
+  ['John', 'Smith'],
+  ['Jane', null],
+  ['Emily', undefined],
+  ['Stephen'],
+];
+console.table(people);
+
+const john = new Person('John', 'Smith');
+const jane = new Person('Jane', 'Doe');
+const emily = new Person('Emily', 'Jones');
+
+console.table([john, jane, emily]);
+
+const family = {};
+
+family.mother = new Person('Jane', 'Smith');
+family.father = new Person('John', 'Smith');
+family.daughter = new Person('Emily', 'Smith');
+
+console.table(family);
+
+console.table([john, jane, emily], ['firstName']);
+
 // circular structure
 const circularObject = {};
 circularObject.circularObject = circularObject;

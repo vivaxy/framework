@@ -1,3 +1,5 @@
+const logBorderColor = '#f0f0f0';
+
 function escapeHTML(unsafe) {
   return unsafe
     .replace(/&/g, '&amp;')
@@ -73,9 +75,9 @@ function create$main() {
 }
 
 const logTypeColors = {
-  log: ['#303942', '#fff', '#f0f0f0'],
-  debug: ['#303942', '#fff', '#f0f0f0'],
-  info: ['#303942', '#fff', '#f0f0f0'],
+  log: ['#303942', '#fff', logBorderColor],
+  debug: ['#303942', '#fff', logBorderColor],
+  info: ['#303942', '#fff', logBorderColor],
   warn: ['#5c3c00', '#fffbe5', '#fff5c2'],
   error: ['#f00', '#fff0f0', '#ffd6d6'],
 };
@@ -430,6 +432,7 @@ function init() {
     timeLog: console.timeLog,
     timeEnd: console.timeEnd,
     assert: console.assert,
+    table: console.table,
   };
 
   console.clear = function clear() {
@@ -442,6 +445,110 @@ function init() {
     if (!assertion) {
       appendLog($log, logTypeColors.error, 'Assertion failed:', ...messages);
     }
+  };
+
+  console.table = function table(data, columns) {
+    nativeConsole.table(data, columns);
+
+    function addLeftBorder($td) {
+      $td.style.borderWidth = '0';
+      $td.style.borderColor = borderColor;
+      $td.style.borderStyle = 'solid';
+      $td.style.borderLeftWidth = '1px';
+      $td.style.borderRightWidth = '1px';
+    }
+
+    function createTableRow(item) {
+      const tableRow = [];
+      if (Array.isArray(item)) {
+        item.forEach(function (value, i) {
+          tableHeaders[i] = String(i);
+          tableRow.push(value);
+        });
+      } else if (typeof item === 'object') {
+        Object.keys(item).forEach(function (k) {
+          if (!tableHeaders.includes(k)) {
+            tableHeaders.push(k);
+          }
+          const index = tableHeaders.indexOf(k);
+          tableRow[index] = item[k];
+        });
+      } else {
+        tableHeaders[0] = 'value';
+        tableRow.push(item);
+      }
+      return tableRow;
+    }
+
+    const tableHeaders = [];
+    const tableData = [];
+    let maxColsCount = 0;
+    if (Array.isArray(data)) {
+      data.forEach(function (item, index) {
+        const tableRow = [String(index), ...createTableRow(item, index)];
+        tableData.push(tableRow);
+        maxColsCount = Math.max(maxColsCount, tableRow.length);
+      });
+    } else {
+      Object.keys(data).forEach(function (key) {
+        const tableRow = [key, ...createTableRow(data[key])];
+        tableData.push(tableRow);
+        maxColsCount = Math.max(maxColsCount, tableRow.length);
+      });
+    }
+    const borderColor = 'rgb(202, 205, 209)';
+    const backgroundColor = 'rgb(241, 243, 244)';
+    const $table = document.createElement('table');
+    $table.style.boxSizing = 'border-box';
+    $table.style.borderCollapse = 'collapse';
+    $table.style.width = '100%';
+    $table.style.border = `1px solid ${borderColor}`;
+    const $thead = document.createElement('thead');
+    const $theadRow = document.createElement('tr');
+    $theadRow.style.borderWidth = '0';
+    $theadRow.style.borderColor = borderColor;
+    $theadRow.style.borderBottomWidth = '1px';
+    $theadRow.style.borderStyle = 'solid';
+    $theadRow.style.backgroundColor = backgroundColor;
+    const $indexHeader = document.createElement('th');
+    $indexHeader.style.textAlign = 'left';
+    $indexHeader.textContent = '(index)';
+    $theadRow.appendChild($indexHeader);
+    tableHeaders.forEach(function (col) {
+      if (!columns || columns.includes(col)) {
+        const $th = document.createElement('th');
+        $th.textContent = col;
+        $th.style.textAlign = 'left';
+        addLeftBorder($th);
+        $theadRow.appendChild($th);
+      }
+    });
+    $thead.appendChild($theadRow);
+
+    const $tbody = document.createElement('tbody');
+    tableData.forEach(function (rowData, index) {
+      const $tr = document.createElement('tr');
+      if (index % 2 === 1) {
+        $tr.style.backgroundColor = backgroundColor;
+      }
+      for (let i = 0; i < maxColsCount; i++) {
+        const $td = document.createElement('td');
+        if (i < rowData.length) {
+          $td.innerHTML = serialize(rowData[i]);
+        }
+        addLeftBorder($td);
+        $tr.appendChild($td);
+      }
+      $tbody.appendChild($tr);
+    });
+
+    $table.appendChild($thead);
+    $table.appendChild($tbody);
+    const $pieceContainer = document.createElement('div');
+    $pieceContainer.style.padding = '8px';
+    $pieceContainer.style.borderBottom = `1px solid ${logBorderColor}`;
+    $pieceContainer.appendChild($table);
+    $log.appendChild($pieceContainer);
   };
 
   const timers = {};
