@@ -210,12 +210,6 @@ function serializeWeakSet() {
   return withItalicStyle(`WeakSet {…}`);
 }
 
-function encodeHTML(html) {
-  const div = document.createElement('div');
-  div.textContent = html;
-  return div.innerHTML;
-}
-
 function serializeDocument() {
   // const xmlSerializer = new XMLSerializer();
   // return `#document ${encodeHTML(xmlSerializer.serializeToString(document))}`;
