@@ -458,6 +458,15 @@ function init() {
       $td.style.borderRightWidth = '1px';
     }
 
+    function addTableHeaderStyle($th) {
+      $th.style.textAlign = 'left';
+      $th.style.fontWeight = 'normal';
+    }
+
+    function addTableCellStyle($cell) {
+      $cell.style.paddingLeft = '4px';
+    }
+
     function createTableRow(item) {
       const tableRow = [];
       if (Array.isArray(item)) {
@@ -496,7 +505,7 @@ function init() {
         maxColsCount = Math.max(maxColsCount, tableRow.length);
       });
     }
-    const borderColor = 'rgb(202, 205, 209)';
+    const borderColor = 'rgb(223, 225, 227)';
     const backgroundColor = 'rgb(241, 243, 244)';
     const $table = document.createElement('table');
     $table.style.boxSizing = 'border-box';
@@ -511,14 +520,16 @@ function init() {
     $theadRow.style.borderStyle = 'solid';
     $theadRow.style.backgroundColor = backgroundColor;
     const $indexHeader = document.createElement('th');
-    $indexHeader.style.textAlign = 'left';
+    addTableHeaderStyle($indexHeader);
+    addTableCellStyle($indexHeader);
     $indexHeader.textContent = '(index)';
     $theadRow.appendChild($indexHeader);
     tableHeaders.forEach(function (col) {
       if (!columns || columns.includes(col)) {
         const $th = document.createElement('th');
+        addTableHeaderStyle($th);
+        addTableCellStyle($th);
         $th.textContent = col;
-        $th.style.textAlign = 'left';
         addLeftBorder($th);
         $theadRow.appendChild($th);
       }
@@ -532,12 +543,20 @@ function init() {
         $tr.style.backgroundColor = backgroundColor;
       }
       for (let i = 0; i < maxColsCount; i++) {
-        const $td = document.createElement('td');
-        if (i < rowData.length) {
-          $td.innerHTML = serialize(rowData[i]);
+        if (i === 0 || !columns || columns.includes(tableHeaders[i - 1])) {
+          // filter columns
+          const $td = document.createElement('td');
+          if (i < rowData.length) {
+            if (i === 0) {
+              $td.innerHTML = serialize(rowData[i]);
+            } else {
+              $td.innerHTML = serializeObjectValue(rowData[i]);
+            }
+          }
+          addLeftBorder($td);
+          addTableCellStyle($td);
+          $tr.appendChild($td);
         }
-        addLeftBorder($td);
-        $tr.appendChild($td);
       }
       $tbody.appendChild($tr);
     });
