@@ -1,5 +1,7 @@
 const logBorderColor = '#f0f0f0';
 
+const quote = "'";
+
 function escapeHTML(unsafe) {
   return unsafe
     .replace(/&/g, '&amp;')
@@ -90,7 +92,7 @@ function elementToString(element) {
 
 function serializeObjectValue(value, met) {
   if (typeof value === 'string') {
-    return withStringStyle(`"${serialize(value, met)}"`);
+    return withStringStyle(`${quote}${serialize(value, met)}${quote}`);
   }
   return serialize(value, met);
 }
@@ -184,7 +186,7 @@ function serializeMap(map, met) {
     `Map(${map.size}) { ${Array.from(map.keys())
       .map(function (key) {
         return `${withStringStyle(
-          `"${key}"`,
+          `${quote}${key}${quote}`,
         )} => ${serializeObjectValue(map.get(key), met)}`;
       })
       .join(', ')} }`,
@@ -222,13 +224,14 @@ function serializeText() {
   });
 }
 
+function serializeElementAttributes(element) {
+  element.getAttributeNames().map((key) => {
+    return `${withStyles(key, { color: 'rgb(153, 69, 0)' })}`;
+  });
+}
+
 function serializeElement(element) {
-  // const $parent = document.createElement('div');
-  // $parent.appendChild(element.cloneNode(true));
-  // return withStyles(encodeHTML($parent.innerHTML), {
-  //   color: 'rgb(136, 18, 128)',
-  // });
-  return withStyles(element.localName, {
+  return withStyles(escapeHTML(`<${element.localName}>`), {
     color: 'rgb(126, 18, 128)',
   });
 }
@@ -242,6 +245,9 @@ function serializeArray(arrayLike, met) {
   return withItalicStyle(
     `(${array.length}) [${array
       .map(function (item) {
+        if (typeof item === 'string') {
+          return withStringStyle(`${quote}${serialize(item, met)}${quote}`);
+        }
         return serialize(item, met);
       })
       .join(', ')}]`,

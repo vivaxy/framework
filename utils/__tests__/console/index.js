@@ -27,7 +27,7 @@ console.log(0);
 console.log(NaN);
 console.log(undefined);
 console.log(null);
-console.log([1, 2, 3]);
+console.log([1, 'string']);
 console.log(Symbol('symbol'));
 console.log(new Date());
 console.log({
@@ -50,7 +50,9 @@ console.log(weakSet);
 console.log(new File([0], 'MockFile.js'));
 console.log(getCallSites());
 console.log(document.implementation.createHTMLDocument('test document'));
-console.log(document.createElement('p'));
+const $div = document.createElement('div');
+$div.innerHTML = '<p data-id="abc"><span>def</span><!-- hij --></p>';
+console.log($div.childNodes[0]);
 
 console.debug('debug');
 console.info('info');
