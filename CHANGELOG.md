@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/vivaxy/framework/compare/v1.5.0...v1.6.0) (2022-03-12)
+
+
+### Features
+
+* add render functions ([cadac00](https://github.com/vivaxy/framework/commit/cadac0019de553774e86023d5eb0a825bc886d57))
+
+
+### Bug Fixes
+
+* **console:** fix string style in array ([6f6dbef](https://github.com/vivaxy/framework/commit/6f6dbef4a34de1f08228751b706b7bd95b78ef36))
+* **console:** optimize table style ([9a25607](https://github.com/vivaxy/framework/commit/9a256070f929479e60f4f1e118321af2daced1c4))
+
 ## [1.5.0](https://github.com/vivaxy/framework/compare/v1.0.2...v1.5.0) (2021-08-09)
 
 
