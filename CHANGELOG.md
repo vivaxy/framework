@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/vivaxy/framework/compare/v1.6.0...v1.7.0) (2022-03-14)
+
+
+### Features
+
+* **benchmark:**  add `benchmark` ([f50e5b1](https://github.com/vivaxy/framework/commit/f50e5b176a31a181f08fdcd6ff06b7b1dbd5d517))
+
 ## [1.6.0](https://github.com/vivaxy/framework/compare/v1.5.0...v1.6.0) (2022-03-12)
 
 
