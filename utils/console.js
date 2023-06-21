@@ -300,6 +300,10 @@ function serializeObject(object, met = new Set()) {
   );
 }
 
+function serializeObjectLike(objectLike) {
+  return serializeObject(JSON.parse(JSON.stringify(objectLike)));
+}
+
 function serializeFunction(arg) {
   return withItalicStyle(String(arg));
 }
@@ -338,6 +342,9 @@ function serialize(arg, met) {
       return serializeDate(arg);
     case arg instanceof Array:
       return serializeArray(arg, met);
+    case arg instanceof DOMRect:
+    case arg instanceof DOMRectList:
+      return serializeObjectLike(arg);
     // typeof
     case typeof arg === 'boolean':
       return serializeBoolean(arg);

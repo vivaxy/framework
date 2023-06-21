@@ -118,6 +118,12 @@ console.log(notCircularObject);
 // native console
 console.nativeConsole.log('only log in browser dev tools');
 
+// DOMRect
+console.log(document.body.getBoundingClientRect());
+
+// DOMRectList
+console.log(document.body.getClientRects());
+
 // new testcase goes here
 
 // uncaught error
