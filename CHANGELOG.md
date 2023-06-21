@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/vivaxy/framework/compare/v1.7.0...v1.8.0) (2023-06-21)
+
+
+### Features
+
+* **console:** supports DOMRect and DOMRectList ([b3e1194](https://github.com/vivaxy/framework/commit/b3e1194747d42379698fcf775d5e78341f31bbe9))
+
 ## [1.7.0](https://github.com/vivaxy/framework/compare/v1.6.0...v1.7.0) (2022-03-14)
 
 
