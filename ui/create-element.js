@@ -2,7 +2,7 @@
  * @since 2021-08-22
  * @author vivaxy
  */
-const addPxStyleKeys = ['fontSize'];
+const addPxStyleKeys = ['fontSize', 'width', 'height'];
 
 export default function createElement(node) {
   if (node === null || node === undefined) {
