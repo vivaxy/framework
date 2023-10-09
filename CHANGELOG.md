@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/vivaxy/framework/compare/v1.8.0...v1.9.0) (2023-10-09)
+
+
+### Features
+
+* **strings:** add string utils ([612ce65](https://github.com/vivaxy/framework/commit/612ce6531add12a315f18ced4d1637ea956569d9))
+
 ## [1.8.0](https://github.com/vivaxy/framework/compare/v1.7.0...v1.8.0) (2023-06-21)
 
 
