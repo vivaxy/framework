@@ -8,21 +8,13 @@
  */
 
 /**
- * snake_case
- * SNAKE_CASE
- * kebab-case
  * camelCase
+ * kebab-case
+ * snake_case
  * PascalCase
- * Humanized string
+ * Title Case
+ * Sentence case
  */
-/**
- * fileName => FileName
- * @param name
- * @returns {String}
- */
-export function camelCaseToPascalCase(name) {
-  return name[0].toUpperCase() + name.slice(1);
-}
 
 /**
  * fileName => file-name
@@ -42,6 +34,83 @@ export function camelCaseToKebabCase(name) {
 }
 
 /**
+ * fileName => file_name
+ * @param name
+ * @returns {String}
+ */
+export function camelCaseToSnakeCase(name) {
+  return Array.prototype.map
+    .call(name, function (letter) {
+      if (letter.toLowerCase() !== letter) {
+        return '_' + letter.toLowerCase();
+      } else {
+        return letter;
+      }
+    })
+    .join('');
+}
+
+/**
+ * fileName => FileName
+ * @param name
+ * @returns {String}
+ */
+export function camelCaseToPascalCase(name) {
+  return name[0].toUpperCase() + name.slice(1);
+}
+
+/**
+ * fileName => File Name
+ * @param name
+ * @returns {String}
+ */
+export function camelCaseToTitleCase(name) {
+  return Array.prototype.map
+    .call(name, function (letter, index) {
+      if (index === 0) {
+        return letter.toUpperCase();
+      }
+      if (letter.toLowerCase() !== letter) {
+        return ' ' + letter;
+      } else {
+        return letter;
+      }
+    })
+    .join('');
+}
+
+/**
+ * fileName => File name
+ * @param name
+ * @returns {String}
+ */
+export function camelCaseToSentenceCase(name) {
+  return Array.prototype.map
+    .call(name, function (letter, index) {
+      if (index === 0) {
+        return letter.toUpperCase();
+      }
+      if (letter.toLowerCase() !== letter) {
+        return ' ' + letter.toLowerCase();
+      } else {
+        return letter;
+      }
+    })
+    .join('');
+}
+
+/**
+ * file-name => fileName
+ * @param name
+ * @returns {String}
+ */
+export function kebabCaseToCamelCase(name) {
+  return name.replace(/-\w/g, function (found) {
+    return found.slice(-1).toUpperCase();
+  });
+}
+
+/**
  * file-name => FileName
  * @param name
  * @returns {String}
@@ -53,23 +122,13 @@ export function kebabCaseToPascalCase(name) {
 }
 
 /**
- * file-name => fileName
+ * file_name => fileName
  * @param name
- * @returns {String}
  */
-export function kebabCaseToCamelCase(name) {
-  return name.replace(/(-)w/g, function (found) {
+export function snakeCaseToCamelCase(name) {
+  return name.replace(/_\w/g, function (found) {
     return found.slice(-1).toUpperCase();
   });
-}
-
-/**
- * FileName => file-name
- * @param name
- * @returns {String}
- */
-export function pascalCaseToKebabCase(name) {
-  return name.replace(/([A-Z])/g, '-$1').toLowerCase();
 }
 
 /**
@@ -81,19 +140,21 @@ export function pascalCaseToCamelCase(name) {
   return name[0].toLowerCase() + name.slice(1);
 }
 
-// /**
-//  * FileName => file-name
-//  * @param name
-//  * @returns {String}
-//  */
-// export function pascalCaseToKebabCase(name) {
-//   return Array.prototype.map.call(name, function (letter, index) {
-//     if (index === 0) {
-//       return letter.toLowerCase();
-//     } else if (letter.toLowerCase() !== letter) {
-//       return '-' + letter.toLowerCase();
-//     } else {
-//       return letter;
-//     }
-//   }).join('');
-// }
+/**
+ * FileName => file-name
+ * @param name
+ * @returns {String}
+ */
+export function pascalCaseToKebabCase(name) {
+  return Array.prototype.map
+    .call(name, function (letter, index) {
+      if (index === 0) {
+        return letter.toLowerCase();
+      } else if (letter.toLowerCase() !== letter) {
+        return '-' + letter.toLowerCase();
+      } else {
+        return letter;
+      }
+    })
+    .join('');
+}
