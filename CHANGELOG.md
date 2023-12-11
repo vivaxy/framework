@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/vivaxy/framework/compare/v1.9.0...v1.10.0) (2023-12-11)
+
+
+### Features
+
+* **ui:** add ui framework ([7fda75d](https://github.com/vivaxy/framework/commit/7fda75d84a4852e10de14a657044e843763e7854))
+
+
+### Bug Fixes
+
+* **strings:** fix strings utils ([b7c1778](https://github.com/vivaxy/framework/commit/b7c1778cf531e1c34fc9744ea24a843ec32011c4))
+
 ### [1.9.1](https://github.com/vivaxy/framework/compare/v1.9.0...v1.9.1) (2023-10-09)
 
 
