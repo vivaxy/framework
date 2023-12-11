@@ -22,10 +22,6 @@ export function createText(text) {
   return document.createTextNode(text);
 }
 
-export function render(createApp, state, root) {
-  root.replaceChildren(createApp(state));
-}
-
 function updateElementChildNodes(newChildNodes, oldChildNodes) {
   let i = 0;
   const { parentNode } = oldChildNodes[0];
@@ -86,7 +82,11 @@ function updateElement(newElement, oldElement) {
   return true;
 }
 
-export function update(createApp, state, root) {
+export function render(createApp, state, root) {
   const newApp = createApp(state);
-  updateElement(newApp, root.childNodes[0]);
+  if (root.childNodes.length) {
+    updateElementChildNodes([newApp], root.childNodes);
+  } else {
+    root.appendChild(newApp);
+  }
 }

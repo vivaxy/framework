@@ -2,7 +2,7 @@
  * @since 2023-11-30
  * @author vivaxy
  */
-import { createElement, createText, render, update } from '../index.js';
+import { createElement, createText, render } from '../index.js';
 
 test('createElement - tagName', function () {
   const element = createElement('div', {}, []);
@@ -36,7 +36,7 @@ test('render', function () {
   expect(root.innerHTML).toBe('1');
 });
 
-test('update', function () {
+test('render twice', function () {
   const root = createElement('div');
   const state = {
     count: '1',
@@ -46,6 +46,6 @@ test('update', function () {
   }
   render(createApp, state, root);
   state.count = 2;
-  update(createApp, state, root);
+  render(createApp, state, root);
   expect(root.innerHTML).toBe('2');
 });
