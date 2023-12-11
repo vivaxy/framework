@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.1](https://github.com/vivaxy/framework/compare/v1.10.0...v1.10.1) (2023-12-11)
+
+
+### Bug Fixes
+
+* **ui:** replace update method with render method ([727bcf2](https://github.com/vivaxy/framework/commit/727bcf2cb41f7a1a5007eaa64e608a6b0ee0867e))
+
 ## [1.10.0](https://github.com/vivaxy/framework/compare/v1.9.0...v1.10.0) (2023-12-11)
 
 
