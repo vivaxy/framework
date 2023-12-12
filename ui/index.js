@@ -2,6 +2,13 @@
  * @since 2023-11-30
  * @author vivaxy
  */
+/**
+ *
+ * @param {string} tagName
+ * @param {object} attributes
+ * @param {Array<HTMLElement>} childNodes
+ * @return {*}
+ */
 export function createElement(tagName, attributes = {}, childNodes = []) {
   const element = document.createElement(tagName);
   Object.keys(attributes).forEach(function (key) {
@@ -18,10 +25,20 @@ export function createElement(tagName, attributes = {}, childNodes = []) {
   return element;
 }
 
+/**
+ *
+ * @param {string} text
+ * @return {Text}
+ */
 export function createText(text) {
   return document.createTextNode(text);
 }
 
+/**
+ *
+ * @param {Array<HTMLElement>} newChildNodes
+ * @param {Array<HTMLElement>} oldChildNodes
+ */
 function updateElementChildNodes(newChildNodes, oldChildNodes) {
   let i = 0;
   const { parentNode } = oldChildNodes[0];
@@ -39,6 +56,12 @@ function updateElementChildNodes(newChildNodes, oldChildNodes) {
   }
 }
 
+/**
+ *
+ * @param {HTMLElement} newElement
+ * @param {HTMLElement} oldElement
+ * @return {boolean}
+ */
 function updateElement(newElement, oldElement) {
   if (
     newElement.nodeType !== oldElement.nodeType ||
@@ -82,6 +105,18 @@ function updateElement(newElement, oldElement) {
   return true;
 }
 
+/**
+ * @callback CreateApp
+ * @param {object} state
+ * @return HTMLElement
+ */
+
+/**
+ *
+ * @param {CreateApp} createApp
+ * @param {object} state
+ * @param {HTMLDivElement} root
+ */
 export function render(createApp, state, root) {
   const newApp = createApp(state);
   if (root.childNodes.length) {
