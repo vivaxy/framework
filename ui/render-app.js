@@ -3,10 +3,19 @@
  * @author vivaxy
  */
 /**
+ * @typedef RenderAppElement
+ * @type {HTMLElement | Text}
+ */
+
+/**
+ * @typedef ArrayLikeElements
+ * @type {NodeListOf<RenderAppElement>|Array<RenderAppElement>}
+ */
+/**
  *
  * @param {string} tagName
  * @param {object} attributes
- * @param {Array<HTMLElement>} childNodes
+ * @param {ArrayLikeElements} childNodes
  * @return {*}
  */
 export function createElement(tagName, attributes = {}, childNodes = []) {
@@ -36,8 +45,8 @@ export function createText(text) {
 
 /**
  *
- * @param {Array<HTMLElement>} newChildNodes
- * @param {Array<HTMLElement>} oldChildNodes
+ * @param {ArrayLikeElements} newChildNodes
+ * @param {ArrayLikeElements} oldChildNodes
  */
 function updateElementChildNodes(newChildNodes, oldChildNodes) {
   let i = 0;
@@ -58,8 +67,8 @@ function updateElementChildNodes(newChildNodes, oldChildNodes) {
 
 /**
  *
- * @param {HTMLElement} newElement
- * @param {HTMLElement} oldElement
+ * @param {RenderAppElement} newElement
+ * @param {RenderAppElement} oldElement
  * @return {boolean}
  */
 function updateElement(newElement, oldElement) {
@@ -108,7 +117,7 @@ function updateElement(newElement, oldElement) {
 /**
  * @callback CreateApp
  * @param {object} state
- * @return HTMLElement
+ * @return {RenderAppElement}
  */
 
 /**

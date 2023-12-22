@@ -4,6 +4,19 @@
  */
 const addPxStyleKeys = ['fontSize', 'width', 'height'];
 
+/**
+ * @typedef Node
+ * @type {string | number | boolean | object}
+ * @property {string} tagName
+ * @property {object} attrs
+ * @property {Node[]} children
+ */
+
+/**
+ * @deprecated
+ * @param {Node} node
+ * @return {HTMLParagraphElement|HTMLSpanElement|Text|null}
+ */
 export default function createElement(node) {
   if (node === null || node === undefined) {
     return null;

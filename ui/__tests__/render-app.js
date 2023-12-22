@@ -2,7 +2,7 @@
  * @since 2023-11-30
  * @author vivaxy
  */
-import { createElement, createText, render } from '../index.js';
+import { createElement, createText, render } from '../render-app.js';
 
 test('createElement - tagName', function () {
   const element = createElement('div', {}, []);
@@ -29,23 +29,30 @@ test('render', function () {
   const state = {
     count: '1',
   };
+
   function createApp(state) {
     return createText(state.count);
   }
+
   render(createApp, state, root);
   expect(root.innerHTML).toBe('1');
 });
 
 test('render twice', function () {
   const root = createElement('div');
-  const state = {
+  let state = {
     count: '1',
   };
+
   function createApp(state) {
     return createText(state.count);
   }
+
   render(createApp, state, root);
-  state.count = 2;
+  state = {
+    ...state,
+    count: 2,
+  };
   render(createApp, state, root);
   expect(root.innerHTML).toBe('2');
 });
