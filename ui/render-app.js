@@ -116,18 +116,18 @@ function updateElement(newElement, oldElement) {
 
 /**
  * @callback CreateApp
- * @param {object} state
+ * @param {object} props
  * @return {RenderAppElement}
  */
 
 /**
  *
  * @param {CreateApp} createApp
- * @param {object} state
+ * @param {object} props
  * @param {HTMLDivElement} root
  */
-export function render(createApp, state, root) {
-  const newApp = createApp(state);
+export function render(createApp, props, root) {
+  const newApp = createApp(props);
   if (root.childNodes.length) {
     updateElementChildNodes([newApp], root.childNodes);
   } else {

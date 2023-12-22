@@ -26,33 +26,59 @@ test('createText', function () {
 
 test('render', function () {
   const root = createElement('div');
-  const state = {
+  const props = {
     count: '1',
   };
 
-  function createApp(state) {
-    return createText(state.count);
+  function createApp(props) {
+    return createText(props.count);
   }
 
-  render(createApp, state, root);
+  render(createApp, props, root);
   expect(root.innerHTML).toBe('1');
 });
 
 test('render twice', function () {
   const root = createElement('div');
-  let state = {
-    count: '1',
+  let props = {
+    count: 1,
   };
 
-  function createApp(state) {
-    return createText(state.count);
+  function createApp(props) {
+    return createText(props.count);
   }
 
-  render(createApp, state, root);
-  state = {
-    ...state,
+  render(createApp, props, root);
+  props = {
+    ...props,
     count: 2,
   };
-  render(createApp, state, root);
+  render(createApp, props, root);
+  expect(root.innerHTML).toBe('2');
+});
+
+test('update props with functions on props', function () {
+  const root = createElement('div');
+  let props = {
+    count: 1,
+    add() {
+      props = {
+        ...props,
+        count: props.count + 1,
+      };
+      renderApp();
+    },
+  };
+
+  function renderApp() {
+    render(createApp, props, root);
+  }
+
+  function createApp(props) {
+    return createText(props.count);
+  }
+
+  renderApp();
+  props.add();
   expect(root.innerHTML).toBe('2');
 });
