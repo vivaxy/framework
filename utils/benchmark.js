@@ -8,6 +8,25 @@ function now() {
   return (performance || Date).now();
 }
 
+/**
+ * @callback Fn
+ * @param {object} ctx
+ */
+
+/**
+ * @callback Hook
+ * @param {object} ctx
+ */
+
+/**
+ * @param {Fn} fn
+ * @param {Hook} beforeAll
+ * @param {Hook} afterAll
+ * @param {Hook} beforeEach
+ * @param {Hook} afterEach
+ * @param {number} loop
+ * @return {Promise<number>}
+ */
 export async function run(
   fn,
   {
@@ -16,7 +35,7 @@ export async function run(
     beforeEach = NOOP,
     afterEach = NOOP,
     loop = 100,
-  },
+  } = {},
 ) {
   const isAsync = fn.toString().startsWith('async');
   const ctx = {};
