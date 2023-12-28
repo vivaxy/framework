@@ -82,3 +82,78 @@ test('update props with functions on props', function () {
   props.add();
   expect(root.innerHTML).toBe('2');
 });
+
+test('should add event listener', function () {
+  const root = createElement('div');
+  let props = {
+    addEvent: false,
+  };
+
+  function renderApp() {
+    render(createApp, props, root);
+  }
+
+  function createApp(props) {
+    const element = createElement('div');
+    if (props.addEvent) {
+      element.addEventListener('click', function () {});
+    }
+    return element;
+  }
+
+  props = {
+    addEvent: true,
+  };
+
+  renderApp();
+  expect(root.childNodes[0].__events.click.length).toBe(1);
+});
+
+test('should remove event listener', function () {
+  const root = createElement('div');
+  let props = {
+    addEvent: true,
+  };
+
+  function renderApp() {
+    render(createApp, props, root);
+  }
+
+  function createApp(props) {
+    const element = createElement('div');
+    if (props.addEvent) {
+      element.addEventListener('click', function () {});
+    }
+    return element;
+  }
+  renderApp();
+
+  props = {
+    addEvent: false,
+  };
+
+  renderApp();
+  expect(root.childNodes[0].__events.click.length).toBe(0);
+});
+
+test('should keep event listener', function () {
+  const root = createElement('div');
+  let props = {
+    onClick() {},
+  };
+
+  function renderApp() {
+    render(createApp, props, root);
+  }
+
+  function createApp(props) {
+    const element = createElement('div');
+    element.addEventListener('click', props.onClick);
+    return element;
+  }
+
+  renderApp();
+  renderApp();
+
+  expect(root.childNodes[0].__events.click[0].listener).toBe(props.onClick);
+});

@@ -2,10 +2,48 @@
  * @since 2023-11-30
  * @author vivaxy
  */
+
 /**
  * @typedef RenderAppElement
  * @type {HTMLElement | Text}
  */
+/**
+ * @param {undefined|boolean|AddEventListenerOptions} options
+ * @return {{once: boolean, capture: boolean, passive: boolean, signal:
+ *   null}|{capture: boolean}}
+ */
+function formatEventListenerOptions(options = {}) {
+  if (typeof options === 'boolean') {
+    return {
+      capture: options,
+      once: false,
+      passive: false,
+      signal: undefined,
+    };
+  }
+  return {
+    capture: !!options.capture,
+    once: !!options.once,
+    passive: !!options.passive,
+    signal: options.signal,
+  };
+}
+
+function isSameEventListener(eventA, eventB) {
+  return (
+    eventA.listener === eventB.listener &&
+    isSameEventListenerOptions(eventA.options, eventB.options)
+  );
+}
+
+function isSameEventListenerOptions(optionA, optionB) {
+  return (
+    optionA.capture === optionB.capture &&
+    optionA.once === optionB.once &&
+    optionA.passive === optionB.passive &&
+    optionA.signal === optionB.signal
+  );
+}
 
 /**
  * @typedef ArrayLikeElements
@@ -31,6 +69,39 @@ export function createElement(tagName, attributes = {}, childNodes = []) {
   childNodes.forEach(function (child) {
     element.appendChild(child);
   });
+  element.__events = {};
+  element.addEventListener = function addEventListener(
+    type,
+    listener,
+    options,
+  ) {
+    element.__events[type] = element.__events[type] || [];
+    if (typeof options === 'boolean') {
+    }
+    element.__events[type].push({
+      listener,
+      options: formatEventListenerOptions(options),
+    });
+    Element.prototype.addEventListener.call(element, type, listener, options);
+  };
+  element.removeEventListener = function removeEventListener(
+    type,
+    listener,
+    options,
+  ) {
+    Element.prototype.removeEventListener.call(
+      element,
+      type,
+      listener,
+      options,
+    );
+    const index = (element.__events[type] || []).findIndex(function (saved) {
+      return isSameEventListener({ listener, options }, saved);
+    });
+    if (index !== -1) {
+      element.__events[type].splice(index, 1);
+    }
+  };
   return element;
 }
 
@@ -101,6 +172,37 @@ function updateElement(newElement, oldElement) {
       oldElement[key] = newElement[key];
     }
   });
+  // may use old events with old elements, expect to use new events
+  for (const eventType of Object.keys(oldElement.__events || {})) {
+    const oldElementEvents = oldElement.__events[eventType] || [];
+    const newElementEvents = newElement.__events[eventType] || [];
+    newElementEvents.forEach(function (newEvent) {
+      const oldEvent = oldElementEvents.find(function (oldEvent) {
+        return isSameEventListener(oldEvent, newEvent);
+      });
+      if (!oldEvent) {
+        // should add event listener
+        oldElement.addEventListener(
+          eventType,
+          newEvent.listener,
+          newEvent.options,
+        );
+      }
+    });
+    oldElementEvents.forEach(function (oldEvent) {
+      const newEvent = newElementEvents.find(function (newEvent) {
+        return isSameEventListener(oldEvent, newEvent);
+      });
+      if (!newEvent) {
+        // should remove event listener
+        oldElement.removeEventListener(
+          eventType,
+          oldEvent.listener,
+          oldEvent.options,
+        );
+      }
+    });
+  }
   if (!oldElement.childNodes.length && newElement.childNodes.length) {
     while (newElement.childNodes.length) {
       oldElement.appendChild(newElement.childNodes[0]);
