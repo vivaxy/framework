@@ -126,6 +126,7 @@ test('should remove event listener', function () {
     }
     return element;
   }
+
   renderApp();
 
   props = {
@@ -156,4 +157,11 @@ test('should keep event listener', function () {
   renderApp();
 
   expect(root.childNodes[0].__events.click[0].listener).toBe(props.onClick);
+});
+
+test('svg', function () {
+  const svg = createElement('svg', {
+    viewBox: '0 0 32 32',
+  });
+  expect(svg.outerHTML).toBe('<svg viewBox="0 0 32 32"></svg>');
 });

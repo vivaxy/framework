@@ -46,6 +46,17 @@ function isSameEventListenerOptions(optionA, optionB) {
 }
 
 /**
+ *
+ * @param {string} tagName
+ */
+function createElementWithNS(tagName) {
+  if (['svg'].includes(tagName)) {
+    return document.createElementNS('http://www.w3.org/2000/svg', tagName);
+  }
+  return document.createElement(tagName);
+}
+
+/**
  * @typedef ArrayLikeElements
  * @type {NodeListOf<RenderAppElement>|Array<RenderAppElement>}
  */
@@ -57,7 +68,7 @@ function isSameEventListenerOptions(optionA, optionB) {
  * @return {*}
  */
 export function createElement(tagName, attributes = {}, childNodes = []) {
-  const element = document.createElement(tagName);
+  const element = createElementWithNS(tagName);
   Object.keys(attributes).forEach(function (key) {
     const value = attributes[key];
     if (typeof value === 'boolean') {
