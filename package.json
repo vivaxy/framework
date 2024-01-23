@@ -12,31 +12,24 @@
     "url": "https://github.com/vivaxy/framework/issues"
   },
   "homepage": "https://github.com/vivaxy/framework#readme",
-  "lint-staged": {
-    "*.{js,ts,css,less,json,md,html,yml,yaml,pcss,jsx,tsx}": [
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "babel-jest": "^27.0.6",
-    "husky": "6",
+    "husky": "^6.0.0",
     "jest": "^27.0.6",
-    "lint-staged": "^11.0.0",
-    "pinst": "^2.1.4",
-    "prettier": "^2.2.1",
+    "lint-staged": "^14.0.1",
+    "prettier": "^2.8.8",
     "standard-version": "^9.0.0"
   },
   "scripts": {
     "release:beta": "standard-version --prerelease beta && npm publish --tag beta && git push --follow-tags",
     "release": "standard-version && npm publish && git push --follow-tags",
     "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -47,5 +40,9 @@
       "**/*.js",
       "!**/__tests__/**/*.js"
     ]
+  },
+  "packageManager": "npm@8.19.4",
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
