@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/vivaxy/framework/compare/v1.10.1...v1.11.0) (2024-01-23)
+
+
+### Features
+
+* **render-app:** support render svg ([31b120e](https://github.com/vivaxy/framework/commit/31b120ec94fe60000309f259d3f7a563785e3d16))
+* **render-app:** update event handlers ([92aaa09](https://github.com/vivaxy/framework/commit/92aaa09c8557cc1f3f44e747c3833db89392d806))
+* **ui:** add jsdoc ([65bc930](https://github.com/vivaxy/framework/commit/65bc930e81d04ea0fc47d79d45be35dbd99a7612))
+
 ### [1.10.1](https://github.com/vivaxy/framework/compare/v1.10.0...v1.10.1) (2023-12-11)
 
 
