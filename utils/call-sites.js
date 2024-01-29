@@ -5,7 +5,9 @@
 export default function getCallSites() {
   const _prepareStackTrace = Error.prepareStackTrace;
   Error.prepareStackTrace = (_, stack) => stack;
-  const stack = new Error().stack;
+  const stack = /** @type {string[]} */ (
+    /** @type {unknown} */ (new Error().stack)
+  );
   Error.prepareStackTrace = _prepareStackTrace;
   stack.shift();
   return stack;

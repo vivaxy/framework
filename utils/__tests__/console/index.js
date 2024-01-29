@@ -38,6 +38,7 @@ console.log(function fn(a, b) {
 });
 try {
   [0].map(function () {
+    // @ts-ignore
     console.log(NOT_DEFINED);
   });
 } catch (e) {
@@ -47,7 +48,7 @@ console.log(map);
 console.log(weakMap);
 console.log(set);
 console.log(weakSet);
-console.log(new File([0], 'MockFile.js'));
+console.log(new File(['0'], 'MockFile.js'));
 console.log(getCallSites());
 console.log(document.implementation.createHTMLDocument('test document'));
 const $div = document.createElement('div');
@@ -116,6 +117,7 @@ const notCircularObject = { a: 1, b: 1 };
 console.log(notCircularObject);
 
 // native console
+// @ts-ignore
 console.nativeConsole.log('only log in browser dev tools');
 
 // DOMRect

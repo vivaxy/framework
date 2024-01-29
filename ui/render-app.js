@@ -2,15 +2,23 @@
  * @since 2023-11-30
  * @author vivaxy
  */
+/**
+ * @typedef {HTMLElement | Text | ChildNode} _RenderAppElement
+ *
+ * @typedef {{ __events?: Object.<string, {listener:
+ *   EventListenerOrEventListenerObject, options: EventListenerOptions}[]> }}
+ *   WithEvents
+ *
+ * @typedef {_RenderAppElement & WithEvents} RenderAppElement
+ */
 
 /**
- * @typedef RenderAppElement
- * @type {HTMLElement | Text}
+ * @typedef {{once: boolean, capture: boolean, passive: boolean, signal:
+ *   null|AbortSignal}|{capture: boolean}} EventListenerOptions
  */
 /**
  * @param {undefined|boolean|AddEventListenerOptions} options
- * @return {{once: boolean, capture: boolean, passive: boolean, signal:
- *   null}|{capture: boolean}}
+ * @return {EventListenerOptions}
  */
 function formatEventListenerOptions(options = {}) {
   if (typeof options === 'boolean') {
@@ -46,11 +54,11 @@ function isSameEventListenerOptions(optionA, optionB) {
 }
 
 /**
- *
  * @param {string} tagName
+ * @return {RenderAppElement}
  */
 function createElementWithNS(tagName) {
-  if (['svg'].includes(tagName)) {
+  if (['svg', 'path', 'text', 'g'].includes(tagName)) {
     return document.createElementNS('http://www.w3.org/2000/svg', tagName);
   }
   return document.createElement(tagName);
@@ -74,7 +82,7 @@ export function createElement(tagName, attributes = {}, childNodes = []) {
     if (typeof value === 'boolean') {
       element[key] = value;
     } else {
-      element.setAttribute(key, value);
+      /** @type {HTMLElement} */ (element).setAttribute(key, value);
     }
   });
   childNodes.forEach(function (child) {
@@ -156,7 +164,8 @@ function updateElementChildNodes(newChildNodes, oldChildNodes) {
 function updateElement(newElement, oldElement) {
   if (
     newElement.nodeType !== oldElement.nodeType ||
-    newElement.tagName !== oldElement.tagName
+    /** @type {HTMLElement} */ (newElement).tagName !==
+      /** @type {HTMLElement} */ (oldElement).tagName
   ) {
     oldElement.parentNode.replaceChild(newElement, oldElement);
     return true;
@@ -167,15 +176,34 @@ function updateElement(newElement, oldElement) {
     }
     return true;
   }
-  for (const { name, value } of newElement.attributes) {
-    if (oldElement.getAttribute(name) !== value) {
-      oldElement.setAttribute(name, value);
+  for (
+    let i = 0;
+    i < /** @type {HTMLElement} */ (newElement).attributes.length;
+    i++
+  ) {
+    const { name, value } = /** @type {HTMLElement} */ (newElement).attributes[
+      i
+    ];
+    if (/** @type {HTMLElement} */ (oldElement).getAttribute(name) !== value) {
+      /** @type {HTMLElement} */ (oldElement).setAttribute(name, value);
     }
   }
-  for (const { name, value } of oldElement.attributes) {
-    const newElementValue = newElement.getAttribute(name);
+  for (
+    let i = 0;
+    i < /** @type {HTMLElement} */ (oldElement).attributes.length;
+    i++
+  ) {
+    const { name, value } = /** @type {HTMLElement} */ (oldElement).attributes[
+      i
+    ];
+    const newElementValue = /** @type {HTMLElement} */ (
+      newElement
+    ).getAttribute(name);
     if (newElementValue !== value) {
-      oldElement.setAttribute(name, newElementValue);
+      /** @type {HTMLElement} */ (oldElement).setAttribute(
+        name,
+        newElementValue,
+      );
     }
   }
   ['checked', 'disabled'].forEach(function (key) {

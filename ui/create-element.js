@@ -26,7 +26,7 @@ export default function createElement(node) {
     typeof node === 'number' ||
     typeof node === 'boolean'
   ) {
-    return document.createTextNode(node);
+    return document.createTextNode(/** @type {string} */ (node));
   }
   const $element = document.createElement(node.tag);
   if (node.attrs) {

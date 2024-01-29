@@ -1,3 +1,7 @@
+/**
+ * @typedef {[string, string, string]} LogStyles
+ */
+
 const logBorderColor = '#f0f0f0';
 
 const quote = "'";
@@ -76,6 +80,9 @@ function create$main() {
   return $main;
 }
 
+/**
+ * @type {{warn: LogStyles, debug: LogStyles, log: LogStyles, error: LogStyles, info: LogStyles}}
+ */
 const logTypeColors = {
   log: ['#303942', '#fff', logBorderColor],
   debug: ['#303942', '#fff', logBorderColor],
@@ -329,13 +336,13 @@ function serialize(arg, met) {
     case arg instanceof Set:
       return serializeSet(arg, met);
     case arg instanceof WeakMap:
-      return serializeWeakMap(arg);
+      return serializeWeakMap();
     case arg instanceof WeakSet:
-      return serializeWeakSet(arg);
+      return serializeWeakSet();
     case arg instanceof Document:
-      return serializeDocument(arg);
+      return serializeDocument();
     case arg instanceof Text:
-      return serializeText(arg);
+      return serializeText();
     case arg instanceof Element:
       return serializeElement(arg);
     case arg instanceof Date:
@@ -389,6 +396,11 @@ function withStringStyle(innerHTML) {
   });
 }
 
+/**
+ * @param $parent
+ * @param {LogStyles} options
+ * @param args
+ */
 function appendLog(
   $parent,
   [color, backgroundColor, borderBottomColor],
@@ -501,7 +513,7 @@ function init() {
     let maxColsCount = 0;
     if (Array.isArray(data)) {
       data.forEach(function (item, index) {
-        const tableRow = [String(index), ...createTableRow(item, index)];
+        const tableRow = [String(index), ...createTableRow(item)];
         tableData.push(tableRow);
         maxColsCount = Math.max(maxColsCount, tableRow.length);
       });
@@ -636,6 +648,7 @@ function init() {
     };
   });
 
+  // @ts-ignore
   console.nativeConsole = nativeConsole;
 
   return function reset() {
@@ -648,7 +661,10 @@ function init() {
   };
 }
 
+// @ts-ignore
 window.framework = window.framework || {};
+// @ts-ignore
 window.framework.console = window.framework.console || {};
+// @ts-ignore
 window.framework.console.init = window.framework.console.init || init;
 init();

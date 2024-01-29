@@ -20,11 +20,7 @@ function now() {
 
 /**
  * @param {Fn} fn
- * @param {Hook} beforeAll
- * @param {Hook} afterAll
- * @param {Hook} beforeEach
- * @param {Hook} afterEach
- * @param {number} loop
+ * @param {{ beforeAll?: Hook, afterAll?: Hook, beforeEach?: Hook, afterEach?: Hook, loop?: number }} options
  * @return {Promise<number>}
  */
 export async function run(
