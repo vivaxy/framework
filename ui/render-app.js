@@ -268,6 +268,10 @@ function updateElement(newElement, oldElement) {
  * @param {HTMLDivElement} root
  */
 export function render(createApp, props, root) {
+  if (!root || !root.childNodes) {
+    throw new Error('Invalid root element');
+  }
+
   const newApp = createApp(props);
   if (root.childNodes.length) {
     updateElementChildNodes([newApp], root.childNodes);
