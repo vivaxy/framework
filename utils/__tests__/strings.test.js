@@ -10,6 +10,7 @@ import {
   camelCaseToSentenceCase,
   kebabCaseToCamelCase,
   kebabCaseToPascalCase,
+  kebabCaseToSentenceCase,
   snakeCaseToCamelCase,
   pascalCaseToCamelCase,
   pascalCaseToKebabCase,
@@ -41,6 +42,10 @@ test('kebabCaseToCamelCase', function () {
 
 test('kebabCaseToPascalCase', function () {
   expect(kebabCaseToPascalCase('file-name')).toBe('FileName');
+});
+
+test('kebabCaseToSentenceCase', function () {
+  expect(kebabCaseToSentenceCase('file-name')).toBe('File Name');
 });
 
 test('snakeCaseToCamelCase', function () {

@@ -18,7 +18,7 @@
 
 /**
  * fileName => file-name
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function camelCaseToKebabCase(name) {
@@ -35,7 +35,7 @@ export function camelCaseToKebabCase(name) {
 
 /**
  * fileName => file_name
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function camelCaseToSnakeCase(name) {
@@ -52,7 +52,7 @@ export function camelCaseToSnakeCase(name) {
 
 /**
  * fileName => FileName
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function camelCaseToPascalCase(name) {
@@ -61,7 +61,7 @@ export function camelCaseToPascalCase(name) {
 
 /**
  * fileName => File Name
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function camelCaseToTitleCase(name) {
@@ -81,7 +81,7 @@ export function camelCaseToTitleCase(name) {
 
 /**
  * fileName => File name
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function camelCaseToSentenceCase(name) {
@@ -101,7 +101,7 @@ export function camelCaseToSentenceCase(name) {
 
 /**
  * file-name => fileName
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function kebabCaseToCamelCase(name) {
@@ -112,7 +112,7 @@ export function kebabCaseToCamelCase(name) {
 
 /**
  * file-name => FileName
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function kebabCaseToPascalCase(name) {
@@ -122,8 +122,19 @@ export function kebabCaseToPascalCase(name) {
 }
 
 /**
+ * file-name => File name
+ * @param {string} name
+ * @returns {String}
+ */
+export function kebabCaseToSentenceCase(name) {
+  return name.replace(/(-|^)\w/g, function (found) {
+    return found.replace('-', ' ').toUpperCase();
+  });
+}
+
+/**
  * file_name => fileName
- * @param name
+ * @param {string} name
  */
 export function snakeCaseToCamelCase(name) {
   return name.replace(/_\w/g, function (found) {
@@ -133,7 +144,7 @@ export function snakeCaseToCamelCase(name) {
 
 /**
  * FileName => fileName
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function pascalCaseToCamelCase(name) {
@@ -142,7 +153,7 @@ export function pascalCaseToCamelCase(name) {
 
 /**
  * FileName => file-name
- * @param name
+ * @param {string} name
  * @returns {String}
  */
 export function pascalCaseToKebabCase(name) {
