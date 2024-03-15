@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/vivaxy/framework/compare/v1.11.0...v1.12.0) (2024-03-15)
+
+
+### Features
+
+* **ui/render-app:** throw error when invalid root element ([0aab342](https://github.com/vivaxy/framework/commit/0aab3425babaf88354673eac581a58e7eb807f5b))
+* **utils/string-score:** init ([5fb5999](https://github.com/vivaxy/framework/commit/5fb59990b3a0d708a553dfd8d34d57afc30cc025))
+* **utils/strings:** add kebabCaseToSentenceCase ([46198d4](https://github.com/vivaxy/framework/commit/46198d4f492c56f4a0092589e8c13edb4ecf1b86))
+
 ## [1.11.0](https://github.com/vivaxy/framework/compare/v1.10.1...v1.11.0) (2024-01-23)
 
 
