@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/vivaxy/framework/compare/v1.12.0...v1.13.0) (2024-03-27)
+
+
+### Features
+
+* **utils/web-test:** init ([badbd5e](https://github.com/vivaxy/framework/commit/badbd5e6738bda0561de810119f3c4c34bbe8be6))
+
 ## [1.12.0](https://github.com/vivaxy/framework/compare/v1.11.0...v1.12.0) (2024-03-15)
 
 
