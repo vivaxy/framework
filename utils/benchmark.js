@@ -20,7 +20,8 @@ function now() {
 
 /**
  * @param {Fn} fn
- * @param {{ beforeAll?: Hook, afterAll?: Hook, beforeEach?: Hook, afterEach?: Hook, loop?: number }} options
+ * @param {{ beforeAll?: Hook, afterAll?: Hook, beforeEach?: Hook, afterEach?:
+ *   Hook, loop?: number }} options
  * @return {Promise<number>}
  */
 export async function run(
@@ -71,4 +72,13 @@ export function getDiff(base, current) {
  */
 export function toPercentage(value, fixed = 2) {
   return (value * 100).toFixed(fixed) + '%';
+}
+
+/**
+ * @param {number} value
+ * @param {number} fixed
+ * @return {string}
+ */
+export function toSignedPercentage(value, fixed = 2) {
+  return (value >= 0 ? '+' : '') + toPercentage(value, fixed);
 }

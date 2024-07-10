@@ -2,7 +2,12 @@
  * @since 2023-12-26
  * @author vivaxy
  */
-import { run, getDiff, toPercentage } from '../benchmark.js';
+import {
+  run,
+  getDiff,
+  toPercentage,
+  toSignedPercentage,
+} from '../benchmark.js';
 
 test('run', async function () {
   const cost = await run(function () {
@@ -43,4 +48,10 @@ test('getDiff', function () {
 
 test('toPercentage', function () {
   expect(toPercentage(0.456789)).toBe('45.68%');
+});
+
+test('toSignedPercentage', function () {
+  expect(toSignedPercentage(0)).toBe('+0.00%');
+  expect(toSignedPercentage(0.456789)).toBe('+45.68%');
+  expect(toSignedPercentage(-0.456789)).toBe('-45.68%');
 });
