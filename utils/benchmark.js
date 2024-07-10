@@ -54,3 +54,21 @@ export async function run(
   await afterAll(ctx);
   return cost / loop;
 }
+
+/**
+ * @param {number} base
+ * @param {number} current
+ * @return {number}
+ */
+export function getDiff(base, current) {
+  return (current - base) / base;
+}
+
+/**
+ * @param {number} value
+ * @param {number} fixed
+ * @return {string}
+ */
+export function toPercentage(value, fixed = 2) {
+  return (value * 100).toFixed(fixed) + '%';
+}
