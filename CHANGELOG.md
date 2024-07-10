@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/vivaxy/framework/compare/v1.13.0...v1.14.0) (2024-07-10)
+
+
+### Features
+
+* **benchmark:** add getDiff and toPercentage ([66eb6b2](https://github.com/vivaxy/framework/commit/66eb6b24c856869e3493568a76535ae66a4a7f7d))
+
 ## [1.13.0](https://github.com/vivaxy/framework/compare/v1.12.0...v1.13.0) (2024-03-27)
 
 
